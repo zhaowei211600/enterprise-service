@@ -1,4 +1,4 @@
-package com.third.enterprise.service.Impl;
+package com.third.enterprise.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.third.enterprise.bean.Product;

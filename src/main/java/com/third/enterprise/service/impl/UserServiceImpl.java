@@ -1,4 +1,4 @@
-package com.third.enterprise.service.Impl;
+package com.third.enterprise.service.impl;
 
 import com.third.enterprise.bean.User;
 import com.third.enterprise.dao.UserMapper;

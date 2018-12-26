@@ -12,11 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * @Author: Jingjiadong
- * @Description:处理403错误
- * @Date: 11:16 AM 08/11/2017
- */
 @Component
 public class CustomizationAccessDeniedHandler implements AccessDeniedHandler {
 

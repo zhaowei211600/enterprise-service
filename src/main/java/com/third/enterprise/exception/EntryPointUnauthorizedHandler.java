@@ -12,11 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * @Author: Jingjiadong
- * @Description:处理401错误
- * @Date: 11:08 AM 08/11/2017
- */
 @Component
 public class EntryPointUnauthorizedHandler implements AuthenticationEntryPoint {
 

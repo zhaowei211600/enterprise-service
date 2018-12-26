@@ -1,4 +1,4 @@
-package com.third.enterprise.service.Impl;
+package com.third.enterprise.service.impl;
 
 import com.third.enterprise.bean.OperationMenu;
 import com.third.enterprise.dao.OperationMenuMapper;
