@@ -21,4 +21,6 @@ public interface UserMapper {
     List<User> listAll();
 
     List<User> findByOrderId(Integer orderId);
+
+    List<User> findByProductId(Integer productId);
 }

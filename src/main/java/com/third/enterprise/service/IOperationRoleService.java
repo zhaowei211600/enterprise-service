@@ -1,6 +1,9 @@
 package com.third.enterprise.service;
 
 import com.third.enterprise.bean.OperationRole;
+import com.third.enterprise.bean.request.OperationRoleRequest;
+
+import java.util.List;
 
 public interface IOperationRoleService {
 
@@ -13,4 +16,8 @@ public interface IOperationRoleService {
     Boolean checkRoleBind(Integer roleId);
 
     Boolean delete(Integer roleId);
+
+    List<OperationRole> listRole(OperationRoleRequest request);
+
+    OperationRole findRoleById(Integer roleId);
 }

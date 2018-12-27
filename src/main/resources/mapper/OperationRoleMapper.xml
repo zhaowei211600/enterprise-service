@@ -130,7 +130,7 @@
   </select>
 
   <select id="listOperationRole" parameterType="com.third.enterprise.bean.request.OperationRoleRequest"
-          resultMap="operationRoleMap">
+          resultMap="OperationRoleMap">
     SELECT
     a.id,
     a.name,
@@ -148,5 +148,24 @@
         a.name = #{name,jdbcType=VARCHAR}
     </if>
     ORDER BY a.id DESC
+  </select>
+
+  <select id="findRoleById" resultMap="OperationRoleMap" parameterType="java.lang.Integer">
+    SELECT
+      a.id,
+      a.name,
+      a.desc,
+      a.rank ,
+      c.id menu_id,
+      c.parent_id ,
+      c.name menu_name,
+      c.url
+    FROM
+      t_operation_role a
+      INNER JOIN t_operation_role_menu b
+        ON a.id = b.role_id
+      INNER JOIN t_operation_menu c
+        ON b.menu_id = c.id
+    WHERE a.id = #{roleId}
   </select>
 </mapper>

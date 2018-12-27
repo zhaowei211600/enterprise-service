@@ -1,8 +1,10 @@
 package com.third.enterprise.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.third.enterprise.bean.OperationMenu;
 import com.third.enterprise.bean.OperationRole;
 import com.third.enterprise.bean.OperationRoleMenu;
+import com.third.enterprise.bean.request.OperationRoleRequest;
 import com.third.enterprise.dao.OperationRoleMapper;
 import com.third.enterprise.dao.OperationRoleMenuMapper;
 import com.third.enterprise.dao.OperationUserRoleMapper;
@@ -78,6 +80,17 @@ public class OperationRoleServiceImpl implements IOperationRoleService{
             }
         }
         return false;
+    }
+
+    @Override
+    public List<OperationRole> listRole(OperationRoleRequest request) {
+        PageHelper.startPage(request.getPageNum(), request.getPageSize());
+        return roleMapper.listOperationRole(request);
+    }
+
+    @Override
+    public OperationRole findRoleById(Integer roleId) {
+        return roleMapper.findRoleById(roleId);
     }
 
     /**

@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@PropertySource("classpath:token.properties")
+@PropertySource("classpath:operation-token.properties")
 @ConfigurationProperties(prefix = "operation.token")
 public class OperationToken {
 

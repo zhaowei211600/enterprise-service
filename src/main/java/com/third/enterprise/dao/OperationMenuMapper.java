@@ -21,4 +21,6 @@ public interface OperationMenuMapper {
 
     List<OperationMenu> getAllMenus(@Param("roleId") Integer roleId);
 
+    List<OperationMenu> findMenusByUserId(Integer userId);
+
 }

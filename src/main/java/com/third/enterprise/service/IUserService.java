@@ -10,4 +10,5 @@ public interface IUserService {
 
     List<User> findByOrderId(Integer orderId);
 
+    List<User> findByProductId(Integer productId);
 }

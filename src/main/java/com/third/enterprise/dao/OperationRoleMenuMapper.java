@@ -1,6 +1,8 @@
 package com.third.enterprise.dao;
 
+import com.third.enterprise.bean.OperationRole;
 import com.third.enterprise.bean.OperationRoleMenu;
+import com.third.enterprise.bean.request.OperationRoleRequest;
 
 import java.util.List;
 

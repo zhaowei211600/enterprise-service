@@ -10,12 +10,20 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/operation/order")
 public class OrderController {
 
     private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
 
+
+
+    @RequestMapping("/product")
     public UnifiedResult<List<Order>> findOrderByProductId(Integer productId){
+        return null;
+    }
+
+    @RequestMapping("/user/order")
+    public UnifiedResult userOrder(Integer productId){
         return null;
     }
 }

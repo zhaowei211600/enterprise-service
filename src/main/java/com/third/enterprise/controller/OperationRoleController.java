@@ -2,12 +2,14 @@ package com.third.enterprise.controller;
 
 import com.third.enterprise.bean.OperationMenu;
 import com.third.enterprise.bean.OperationRole;
+import com.third.enterprise.bean.request.OperationRoleRequest;
 import com.third.enterprise.bean.request.RoleListRequest;
 import com.third.enterprise.bean.response.UnifiedResult;
 import com.third.enterprise.bean.response.UnifiedResultBuilder;
 import com.third.enterprise.service.IOperationRoleService;
 import com.third.enterprise.util.Constants;
 import com.third.enterprise.util.ErrorUtil;
+import com.third.enterprise.util.Page;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -83,8 +85,21 @@ public class OperationRoleController {
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.POST)
-    public UnifiedResult list(RoleListRequest roleListRequest) {
-        return null;
+    public UnifiedResult list(OperationRoleRequest operationRoleRequest) {
+
+        List<OperationRole> roleList = operationRoleService.listRole(operationRoleRequest);
+        if(roleList != null && roleList.size() >0 ){
+            return UnifiedResultBuilder.successResult(Constants.SUCCESS_MESSAGE, roleList, Page.toPage(roleList).getTotal());
+        }
+        return UnifiedResultBuilder.errorResult(Constants.EMPTY_DATA_ERROR_CODE, Constants.EMPTY_DATA_ERROR_MESSAGE);
     }
 
+    @RequestMapping(value = "/findById")
+    public UnifiedResult findById(Integer id) {
+        OperationRole operationRole = operationRoleService.findRoleById(id);
+        if(operationRole != null){
+            return UnifiedResultBuilder.successResult(Constants.SUCCESS_MESSAGE, operationRole);
+        }
+        return UnifiedResultBuilder.errorResult(Constants.EMPTY_DATA_ERROR_CODE, Constants.EMPTY_DATA_ERROR_MESSAGE);
+    }
 }

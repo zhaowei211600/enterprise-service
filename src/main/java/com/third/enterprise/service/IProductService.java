@@ -18,4 +18,6 @@ public interface IProductService {
     Product findByProductId(Integer productId);
 
     boolean updateStatus(Integer productId, String status);
+
+    boolean chooseUser(Integer productId, Integer userId, Integer orderId);
 }

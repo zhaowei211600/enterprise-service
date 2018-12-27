@@ -27,4 +27,9 @@ public class UserServiceImpl implements IUserService{
     public List<User> findByOrderId(Integer orderId) {
         return userMapper.findByOrderId(orderId);
     }
+
+    @Override
+    public List<User> findByProductId(Integer productId) {
+        return userMapper.findByProductId(productId);
+    }
 }

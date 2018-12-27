@@ -69,7 +69,18 @@ public final class Constants {
 
         public static final String WAIT_ORDER = "1";
 
-        public static final String WAIT_CONFIRM = "2";
+        public static final String ON_DOING = "2";
+
+        public static final String WAIT_CHECK = "3";
+
+        public static final String ALREADLY_CHECKED = "4";
+    }
+
+    public class OrderState{
+
+        public static final String WAIT_CONFIRM = "1";
+
+        public static final String CHECKED = "2";
 
         public static final String WAIT_CHECK = "3";
 
