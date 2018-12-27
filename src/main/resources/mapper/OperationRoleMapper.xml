@@ -149,6 +149,17 @@
     </if>
     ORDER BY a.id DESC
   </select>
+  <select id="listOperationRoleCount" parameterType="com.third.enterprise.bean.request.OperationRoleRequest"
+      resultType="java.lang.Integer">
+    SELECT
+        count(1)
+    FROM
+    t_operation_role a
+    WHERE 1 = 1
+    <if test="name != null and name != ''">
+      a.name = #{name,jdbcType=VARCHAR}
+    </if>
+  </select>
 
   <select id="findRoleById" resultMap="OperationRoleMap" parameterType="java.lang.Integer">
     SELECT

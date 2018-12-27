@@ -8,6 +8,7 @@ import com.third.enterprise.service.IOperationMenuService;
 import com.third.enterprise.util.Constants;
 import com.third.enterprise.util.Page;
 import com.third.enterprise.util.Tree;
+import com.third.enterprise.util.TreeNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,8 @@ public class OperationMenuController {
     private IOperationMenuService menuService;
 
     @PostMapping(value = "/all")
-    public UnifiedResult<List<Tree>> getAllMenus(Integer roleId) {
-        List<Tree> allMenus = menuService.getAllMenus(roleId);
+    public UnifiedResult<List<TreeNode>> getAllMenus(Integer roleId) {
+        List<TreeNode> allMenus = menuService.getAllMenus(roleId);
         if(allMenus != null && allMenus.size() > 0){
             return  UnifiedResultBuilder.successResult(Constants.SUCCESS_MESSAGE, allMenus);
         }

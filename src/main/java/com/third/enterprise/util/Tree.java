@@ -2,10 +2,14 @@ package com.third.enterprise.util;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Tree {
+
+    private static Map<String, Object> stateMap = new HashMap();
 
     private Integer id;
 
@@ -18,6 +22,8 @@ public class Tree {
     private String link;
 
     private Boolean spread;
+
+    private Map<String, Object> state;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Tree> children;
@@ -80,6 +86,14 @@ public class Tree {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public Map<String, Object> getState() {
+        return state;
+    }
+
+    public void setState() {
+        this.state = stateMap;
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.third.enterprise.service.impl;
 
-import com.github.pagehelper.PageHelper;
 import com.third.enterprise.bean.OperationMenu;
 import com.third.enterprise.bean.OperationRole;
 import com.third.enterprise.bean.OperationRoleMenu;
@@ -9,6 +8,7 @@ import com.third.enterprise.dao.OperationRoleMapper;
 import com.third.enterprise.dao.OperationRoleMenuMapper;
 import com.third.enterprise.dao.OperationUserRoleMapper;
 import com.third.enterprise.service.IOperationRoleService;
+import com.third.enterprise.util.Page;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -84,8 +84,13 @@ public class OperationRoleServiceImpl implements IOperationRoleService{
 
     @Override
     public List<OperationRole> listRole(OperationRoleRequest request) {
-        PageHelper.startPage(request.getPageNum(), request.getPageSize());
-        return roleMapper.listOperationRole(request);
+        int count = roleMapper.listOperationRoleCount(request);
+        List<OperationRole> roleList = roleMapper.listOperationRole(request);
+        Page roleListPage = Page.toPage(roleList);
+        roleListPage.setTotal(count);
+        roleListPage.setPageNum(request.getPageNum());
+        roleListPage.setPages(request.getPageSize());
+        return roleListPage.getList();
     }
 
     @Override

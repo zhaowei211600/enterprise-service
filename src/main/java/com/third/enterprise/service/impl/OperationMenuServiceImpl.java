@@ -6,6 +6,7 @@ import com.third.enterprise.dao.OperationMenuMapper;
 import com.third.enterprise.service.IOperationMenuService;
 import com.third.enterprise.util.MenuTreeUtil;
 import com.third.enterprise.util.Tree;
+import com.third.enterprise.util.TreeNode;
 import com.third.enterprise.util.TreeNodeUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.Transformer;
@@ -26,7 +27,7 @@ public class OperationMenuServiceImpl implements IOperationMenuService{
     private OperationMenuMapper menuMapper;
 
     @Override
-    public List<Tree> getAllMenus(Integer roleId) {
+    public List<TreeNode> getAllMenus(Integer roleId) {
         List<OperationMenu> allMenus = menuMapper.getAllMenus(roleId);
         if(!allMenus.isEmpty()){
             return MenuTreeUtil.generateMenuTree(allMenus);

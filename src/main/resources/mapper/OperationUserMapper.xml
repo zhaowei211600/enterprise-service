@@ -173,16 +173,16 @@
   <select id="listOperationUser" resultType="com.third.enterprise.bean.request.OperationUserListRequest"
           resultMap="OperationUserAndRole">
     SELECT
-    a.id ,
-    a.account ,
-    a.password ,
-    a.real_name ,
-    a.contact_phone ,
-    a.status ,
-    b.role_id,
-    c.name,
-    c.desc,
-    c.rank
+      a.id ,
+      a.account ,
+      a.password ,
+      a.real_name ,
+      a.contact_phone ,
+      a.status ,
+      b.role_id,
+      c.name,
+      c.desc,
+      c.rank
     FROM
     t_operation_user a
     LEFT JOIN t_operation_user_role b
@@ -196,6 +196,6 @@
     <if test="realName!=null and realName !=''">
       AND a.real_name = #{realName,jdbcType=VARCHAR}
     </if>
-    order by t.id DESC
+    order by a.id DESC
   </select>
 </mapper>

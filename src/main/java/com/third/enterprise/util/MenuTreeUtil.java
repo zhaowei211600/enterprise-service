@@ -26,20 +26,20 @@ public class MenuTreeUtil {
         return TreeNodeUtil.buildNodesTree(treeNodes);
     }*/
 
-    public static List<Tree> generateMenuTree(List<OperationMenu> menuList) {
+    public static List<TreeNode> generateMenuTree(List<OperationMenu> menuList) {
         List treeNodes = (List) CollectionUtils.collect(
                 menuList,new Transformer() {
                     @Override
                     public Object transform(Object arg0) {
                         OperationMenu menuEntity = (OperationMenu) arg0;
-                        Tree node = new Tree();
+                        TreeNode node = new TreeNode();
                         node.setId(menuEntity.getId());
                         node.setParentId(menuEntity.getParentId());
-                        node.setName(menuEntity.getName());
-                        node.setLink(menuEntity.getUrl());
-                       /* if(menuEntity.get) {
+                        node.setText(menuEntity.getName());
+                        node.setHref(menuEntity.getUrl());
+                        if(menuEntity.getChecked()) {
                             node.setState();
-                        }*/
+                        }
                         return node;
                     }
                 });

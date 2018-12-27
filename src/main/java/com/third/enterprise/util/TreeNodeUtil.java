@@ -65,21 +65,21 @@ public class TreeNodeUtil {
      * @param nodeList
      * @return
      */
-    public static List<Tree> buildNodeTree(List<Tree> nodeList){
+    public static List<TreeNode> buildNodeTree(List<TreeNode> nodeList){
         if (nodeList == null) {
             throw new IllegalArgumentException("列表不能为空 ");
         }
-        List<Tree> rootNodes = findRootNode(nodeList);
+        List<TreeNode> rootNodes = findRootNode(nodeList);
         if (rootNodes == null || rootNodes.isEmpty()) {
             throw new IllegalArgumentException("无法获取一级目录");
         }
-        for (Tree parent : rootNodes) {
-            for (Tree it : nodeList) {
+        for (TreeNode parent : rootNodes) {
+            for (TreeNode it : nodeList) {
                 if (it.getParentId().equals(parent.getId())) {
-                    if (parent.getChildren() == null) {
-                        parent.setChildren(new ArrayList<Tree>());
+                    if (parent.getNodes() == null) {
+                        parent.setNodes(new ArrayList<TreeNode>());
                     }
-                    parent.getChildren().add(it);
+                    parent.getNodes().add(it);
                 }
             }
         }
@@ -87,23 +87,22 @@ public class TreeNodeUtil {
     }
 
 
-    private static List<Tree> findRootNode(List<Tree> nodeList) {
+    private static List<TreeNode> findRootNode(List<TreeNode> nodeList) {
         List nodeIds = (List) CollectionUtils.collect(
                 nodeList,new Transformer() {
-            @Override
-            public Object transform(Object arg0) {
-                Tree node = (Tree) arg0;
-                return node.getId();
-            }
-        });
-        List<Tree> rootNodes = new LinkedList<>();
-        for(Tree node : nodeList){
+                    @Override
+                    public Object transform(Object arg0) {
+                        TreeNode node = (TreeNode) arg0;
+                        return node.getId();
+                    }
+                });
+        List<TreeNode> rootNodes = new LinkedList<>();
+        for(TreeNode node : nodeList){
             if(!nodeIds.contains(node.getParentId())){
                 rootNodes.add(node);
             }
         }
         return rootNodes;
     }
-
 
 }
