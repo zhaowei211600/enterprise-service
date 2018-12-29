@@ -38,7 +38,7 @@ public class OperationUserTokenFilter extends OncePerRequestFilter {
             String username = jwtHelper.getUsernameFromToken(authToken);
             logger.info("checking authentication " + username);
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                OperationUser userDetails = (OperationUser)this.userDetailsService.loadUserByUsername(username);
+                JwtUser userDetails = (JwtUser)this.userDetailsService.loadUserByUsername(username);
                 if (jwtHelper.validateToken(authToken, userDetails)) {
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                             userDetails, null, userDetails.getAuthorities());

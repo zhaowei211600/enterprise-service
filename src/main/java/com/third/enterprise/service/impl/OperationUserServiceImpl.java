@@ -71,6 +71,11 @@ public class OperationUserServiceImpl implements IOperationUserService {
         return operationUserMapper.listOperationUser(request);
     }
 
+    @Override
+    public OperationUser findUserById(Integer userId) {
+        return operationUserMapper.selectUserAndRolesById(userId);
+    }
+
     private  boolean afterSaveUser(OperationUser operationUser){
         List<OperationUserRole> userRoleList = buildUserRoleRelation(operationUser);
         if (userRoleList != null && !userRoleList.isEmpty()) {

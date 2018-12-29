@@ -37,6 +37,7 @@ public class FileController {
     private static final String[] ALL_FILE_TYPE = {"png","jpeg","jpg"};
 
 
+    @RequestMapping("/upload")
     public UnifiedResult fileUpload(@RequestParam("file") MultipartFile file){
 
         logger.info("文件上传大小：{}", file.getSize());
@@ -67,6 +68,15 @@ public class FileController {
         logger.info("上传文件后缀不合法:{}", file.getOriginalFilename());
         return UnifiedResultBuilder.errorResult(Constants.FILE_HANDLE_ERROR_CODE,
                 Constants.FILE_HANDLE_ERROR_MESSAGE);
+    }
+
+    @RequestMapping("/download")
+    public UnifiedResult downloadFile(String fileName){
+        String fileBase64Str = fileService.getImgBase64Str(fileName);
+        if(!StringUtils.isEmpty(fileBase64Str)){
+            return UnifiedResultBuilder.successResult(Constants.SUCCESS_CODE,Constants.SUCCESS_MESSAGE, fileBase64Str);
+        }
+        return UnifiedResultBuilder.errorResult(Constants.EMPTY_DATA_ERROR_CODE, Constants.EMPTY_DATA_ERROR_MESSAGE);
     }
 
     private static String generateFileName(String fileSuffix) {

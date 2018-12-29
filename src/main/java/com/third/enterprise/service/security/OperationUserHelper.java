@@ -99,7 +99,7 @@ public class OperationUserHelper {
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         Date expirationDate = generateExpirationDate();
-        OperationUser jwtUser= (OperationUser)userDetails;
+        JwtUser jwtUser= (JwtUser)userDetails;
         claims.put(CLAIM_KEY_USERID,jwtUser.getId());
         claims.put(CLAIM_KEY_USERNAME, jwtUser.getUsername());
         claims.put(CLAIM_KEY_CREATED, new Date());
@@ -141,7 +141,7 @@ public class OperationUserHelper {
         if(hasKey){
             return false;
         }
-        OperationUser user = (OperationUser) userDetails;
+        JwtUser user = (JwtUser) userDetails;
         final String username = getUsernameFromToken(token);
         return (username.equals(user.getUsername()) && !isTokenExpired(token));
     }

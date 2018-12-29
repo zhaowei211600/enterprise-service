@@ -1,14 +1,15 @@
 package com.third.enterprise.controller;
 
 import com.third.enterprise.bean.OperationRole;
+import com.third.enterprise.bean.OperationUser;
 import com.third.enterprise.bean.request.LoginRequest;
 import com.third.enterprise.bean.request.OperationUserListRequest;
 import com.third.enterprise.bean.request.RegisterRequest;
 import com.third.enterprise.bean.response.UnifiedResult;
 import com.third.enterprise.bean.response.UnifiedResultBuilder;
 import com.third.enterprise.service.IOperationUserService;
+import com.third.enterprise.service.security.JwtUser;
 import com.third.enterprise.service.security.OperationUserHelper;
-import com.third.enterprise.service.security.OperationUser;
 import com.third.enterprise.service.security.OperationToken;
 import com.third.enterprise.util.Constants;
 import com.third.enterprise.util.ErrorUtil;
@@ -68,7 +69,7 @@ public class OperationUserController {
         final UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getUsername());
         final String token = jwtHelper.generateToken(userDetails);
         //记录登录时间
-        String loginKey = LOGIN_REDIS_KEY + ((OperationUser)userDetails).getId();
+        String loginKey = LOGIN_REDIS_KEY + ((JwtUser)userDetails).getId();
         redisTemplate.opsForValue().set(loginKey, new Date());
         //返回登录信息
         Map<String,Object> paramMap = new HashMap<>(2);
@@ -104,7 +105,7 @@ public class OperationUserController {
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public UnifiedResult edit(@Valid com.third.enterprise.bean.OperationUser operationUser,
+    public UnifiedResult edit(@Valid OperationUser operationUser,
                               BindingResult bindingResult,
                               String roleIds) {
         if (bindingResult.hasErrors()) {
@@ -121,7 +122,7 @@ public class OperationUserController {
             }
             operationUser.setRoleList(operationRoleList);
         }
-        if (StringUtils.isEmpty(operationUser.getPassword())) {
+        if (!StringUtils.isEmpty(operationUser.getPassword())) {
             operationUser.setPassword(new BCryptPasswordEncoder().encode(operationUser.getPassword()));
         }
         if (operationUser.getId() == null || operationUser.getId() == 0) {
@@ -163,5 +164,15 @@ public class OperationUserController {
             return UnifiedResultBuilder.errorResult(Constants.CALL_SERVICE_ERROR_CODE, Constants.CALL_SERVICE_ERROR_MESSAGE);
         }
         return UnifiedResultBuilder.defaultSuccessResult();
+    }
+
+    @RequestMapping(value = "/find", method = RequestMethod.POST)
+    public UnifiedResult findById(Integer userId) {
+
+        OperationUser operationUser = operationUserService.findUserById(userId);
+        if(operationUser != null){
+            return UnifiedResultBuilder.successResult(Constants.SUCCESS_MESSAGE, operationUser);
+        }
+        return UnifiedResultBuilder.errorResult(Constants.EMPTY_DATA_ERROR_CODE, Constants.EMPTY_DATA_ERROR_MESSAGE);
     }
 }

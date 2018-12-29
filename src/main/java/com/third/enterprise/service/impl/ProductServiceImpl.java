@@ -3,8 +3,10 @@ package com.third.enterprise.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.third.enterprise.bean.Product;
 import com.third.enterprise.bean.request.ProductListRequest;
+import com.third.enterprise.bean.response.ProductStatResponse;
 import com.third.enterprise.dao.OrderMapper;
 import com.third.enterprise.dao.ProductMapper;
+import com.third.enterprise.service.GenerateProductNumberService;
 import com.third.enterprise.service.IProductService;
 import com.third.enterprise.util.Constants;
 import org.slf4j.Logger;
@@ -19,6 +21,9 @@ import java.util.List;
 public class ProductServiceImpl implements IProductService{
 
     private static final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
+
+    @Resource
+    private GenerateProductNumberService generateProductNumberService;
 
     @Resource
     private ProductMapper productMapper;
@@ -41,6 +46,9 @@ public class ProductServiceImpl implements IProductService{
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean saveProduct(Product product) {
+        product.setProductId(generateProductNumberService.generateProductNumberNumber());
+        product.setStatus("1");
+        product.setPublishStatus("1");
         if(productMapper.insertSelective(product) > 0){
             return true;
         }
@@ -58,7 +66,7 @@ public class ProductServiceImpl implements IProductService{
 
     @Override
     public Product findByProductId(Integer productId) {
-        return productMapper.selectByPrimaryKey(productId);
+        return productMapper.selectByProductId(productId);
     }
 
     @Override
@@ -73,7 +81,7 @@ public class ProductServiceImpl implements IProductService{
     @Override
     public boolean chooseUser(Integer productId, Integer userId, Integer orderId) {
 
-        Product product = productMapper.selectByPrimaryKey(productId);
+        Product product = productMapper.selectByProductId(productId);
         if(product != null){
             product.setOrderId(orderId);
             product.setOwnerId(userId);
@@ -85,5 +93,18 @@ public class ProductServiceImpl implements IProductService{
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean revokeProduct(Integer productId) {
+        if(productMapper.updateProductStatus(productId, Constants.PublishState.REVOKE) > 0){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public ProductStatResponse statProduct() {
+        return productMapper.statProduct();
     }
 }

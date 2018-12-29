@@ -14,4 +14,6 @@ public interface IOperationUserService {
     boolean updateOperationUserAndRole(OperationUser operationUser);
 
     List<OperationUser> listOperationUser(OperationUserListRequest request);
+
+    OperationUser findUserById(Integer userId);
 }

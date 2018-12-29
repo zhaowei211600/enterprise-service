@@ -5,7 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-public class OperationUser implements UserDetails {
+public class JwtUser implements UserDetails {
 
     private final Integer id;
     private final String username;
@@ -14,7 +14,7 @@ public class OperationUser implements UserDetails {
     private final Collection<? extends GrantedAuthority> authorities;
 
 
-    public OperationUser(
+    public JwtUser(
             Integer id,
             String username,
             String password,

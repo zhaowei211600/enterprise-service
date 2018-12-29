@@ -98,6 +98,11 @@ public class OperationRoleServiceImpl implements IOperationRoleService{
         return roleMapper.findRoleById(roleId);
     }
 
+    @Override
+    public List<OperationRole> allRoles() {
+        return roleMapper.allRoles();
+    }
+
     /**
      * 创建角色和菜单关联实体
      */

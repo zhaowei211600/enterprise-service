@@ -20,4 +20,6 @@ public interface IOperationRoleService {
     List<OperationRole> listRole(OperationRoleRequest request);
 
     OperationRole findRoleById(Integer roleId);
+
+    List<OperationRole> allRoles();
 }

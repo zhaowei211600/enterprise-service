@@ -3,6 +3,7 @@ package com.third.enterprise.integration.impl;
 import com.third.enterprise.integration.IFileService;
 import com.third.enterprise.util.ErrorUtil;
 import com.third.enterprise.util.LocalFileUtil;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,5 +29,19 @@ public class FileServiceImpl implements IFileService{
             logger.error("文件上传错误：{}", ErrorUtil.getErrorStackInfo(e));
         }
         return false;
+    }
+
+    @Override
+    public String getImgBase64Str(String fileName) {
+
+        try {
+            byte[] fileContent = LocalFileUtil.getFileBytes(localFilePath, fileName);
+            if(fileContent != null){
+                return Base64.encodeBase64String(fileContent);
+            }
+        } catch (IOException e) {
+            logger.error("文件下载失败：{}", ErrorUtil.getErrorStackInfo(e));
+        }
+        return null;
     }
 }

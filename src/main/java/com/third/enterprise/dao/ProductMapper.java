@@ -2,6 +2,7 @@ package com.third.enterprise.dao;
 
 import com.third.enterprise.bean.Product;
 import com.third.enterprise.bean.request.ProductListRequest;
+import com.third.enterprise.bean.response.ProductStatResponse;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface ProductMapper {
 
     int insertSelective(Product record);
 
-    Product selectByPrimaryKey(Integer id);
+    Product selectByProductId(Integer id);
 
     int updateByPrimaryKeySelective(Product record);
 
@@ -27,4 +28,5 @@ public interface ProductMapper {
     Integer updateProductStatus(@Param("productId") Integer productId,
                                 @Param("status") String status);
 
+    ProductStatResponse statProduct();
 }

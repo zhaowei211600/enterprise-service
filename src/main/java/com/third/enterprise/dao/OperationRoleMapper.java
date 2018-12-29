@@ -26,4 +26,6 @@ public interface OperationRoleMapper {
     Integer listOperationRoleCount(OperationRoleRequest request);
 
     OperationRole findRoleById(Integer roleId);
+
+    List<OperationRole> allRoles();
 }

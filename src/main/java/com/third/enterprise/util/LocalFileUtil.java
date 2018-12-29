@@ -19,7 +19,7 @@ public class LocalFileUtil {
             if (!tempFile.exists()) {
                 tempFile.mkdirs();
             }
-            os = new FileOutputStream(tempFile.getPath() + File.separator + fileName);
+            os = new FileOutputStream(tempFile.getPath() + fileName);
             // 开始读取
             while ((len = inputStream.read(bs)) != -1) {
                 os.write(bs, 0, len);
@@ -40,4 +40,31 @@ public class LocalFileUtil {
         return false;
     }
 
+    public static byte[] getFileBytes(String filePath,String fileName) throws IOException {
+        byte[] buffer = null;
+        File file = new File(filePath + fileName);
+        FileInputStream fis = null;
+        ByteArrayOutputStream bos = null;
+        try {
+            fis = new FileInputStream(file);
+            bos = new ByteArrayOutputStream(1000);
+            byte[] b = new byte[1000];
+            int n;
+            while ((n = fis.read(b)) != -1) {
+                bos.write(b, 0, n);
+            }
+            buffer = bos.toByteArray();
+        } catch (FileNotFoundException e) {
+            logger.error("文件找不到：{}", ErrorUtil.getErrorStackInfo(e));
+        } catch (IOException e) {
+            logger.error("文件读取异常：{}", ErrorUtil.getErrorStackInfo(e));
+            if(fis != null){
+                fis.close();
+            }
+            if(bos != null){
+                bos.close();
+            }
+        }
+        return buffer;
+    }
 }

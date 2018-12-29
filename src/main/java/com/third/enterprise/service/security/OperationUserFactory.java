@@ -13,8 +13,8 @@ public class OperationUserFactory {
 
     }
 
-    public static OperationUser create(com.third.enterprise.bean.OperationUser operationUser){
-        return new OperationUser(
+    public static JwtUser create(com.third.enterprise.bean.OperationUser operationUser){
+        return new JwtUser(
                 operationUser.getId(),
                 operationUser.getAccount(),
                 operationUser.getPassword(),

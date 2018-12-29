@@ -1,7 +1,10 @@
 package com.third.enterprise.dao;
 
 import com.third.enterprise.bean.Order;
+import com.third.enterprise.bean.request.OperationRoleRequest;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface OrderMapper {
 
@@ -18,5 +21,7 @@ public interface OrderMapper {
     int updateByPrimaryKey(Order record);
 
     int updateOrderStatus(@Param("orderId") Integer orderId,
-                          @Param("status") String status);
+                              @Param("status") String status);
+
+    List<Order> listOrder(OperationRoleRequest request);
 }

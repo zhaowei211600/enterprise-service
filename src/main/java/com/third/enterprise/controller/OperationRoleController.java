@@ -102,4 +102,13 @@ public class OperationRoleController {
         }
         return UnifiedResultBuilder.errorResult(Constants.EMPTY_DATA_ERROR_CODE, Constants.EMPTY_DATA_ERROR_MESSAGE);
     }
+
+    @RequestMapping(value = "/all")
+    public UnifiedResult allRoles() {
+        List<OperationRole> allRoles = operationRoleService.allRoles();
+        if(allRoles != null){
+            return UnifiedResultBuilder.successResult(Constants.SUCCESS_MESSAGE, allRoles);
+        }
+        return UnifiedResultBuilder.errorResult(Constants.EMPTY_DATA_ERROR_CODE, Constants.EMPTY_DATA_ERROR_MESSAGE);
+    }
 }

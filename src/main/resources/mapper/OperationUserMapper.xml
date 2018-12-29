@@ -198,4 +198,25 @@
     </if>
     order by a.id DESC
   </select>
+
+  <select id="selectUserAndRolesById" parameterType="java.lang.Integer" resultMap="OperationUserAndRole">
+    SELECT
+      a.id ,
+      a.account ,
+      a.password ,
+      a.real_name ,
+      a.contact_phone ,
+      a.status ,
+      b.role_id,
+      c.name,
+      c.desc,
+      c.rank
+    FROM
+      t_operation_user a
+    LEFT JOIN t_operation_user_role b
+    ON a.id = b.user_id
+    LEFT JOIN t_operation_role c
+    ON b.role_id = c.id
+    WHERE a.id = #{id,jdbcType=INTEGER}
+  </select>
 </mapper>

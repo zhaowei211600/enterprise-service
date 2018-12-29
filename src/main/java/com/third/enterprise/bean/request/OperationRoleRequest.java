@@ -4,6 +4,8 @@ public class OperationRoleRequest {
 
     private String name;
 
+    private Integer productId;
+
     private Integer pageNum = 1;
 
     private Integer pageSize = 10;
@@ -30,5 +32,13 @@ public class OperationRoleRequest {
 
     public void setPageSize(Integer pageSize) {
         this.pageSize = pageSize;
+    }
+
+    public Integer getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Integer productId) {
+        this.productId = productId;
     }
 }

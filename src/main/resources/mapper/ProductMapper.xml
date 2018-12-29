@@ -10,24 +10,49 @@
     <result column="period" property="period" jdbcType="INTEGER" />
     <result column="expect_delivery_time" property="expectDeliveryTime" jdbcType="DATE" />
     <result column="real_delivery_time" property="realDeliveryTime" jdbcType="DATE" />
+    <result column="contract_time" property="contractTime" jdbcType="DATE" />
     <result column="desc" property="desc" jdbcType="VARCHAR" />
     <result column="delivery_desc" property="deliveryDesc" jdbcType="VARCHAR" />
+    <result column="check_desc" property="checkDesc" jdbcType="VARCHAR" />
     <result column="publish_status" property="publishStatus" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="owner_id" property="ownerId" jdbcType="INTEGER" />
     <result column="order_id" property="orderId" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="phone" property="phone" jdbcType="VARCHAR"/>
+    <result column="real_name" property="realName" jdbcType="VARCHAR"/>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, product_id, name, budget, real_cost, period, expect_delivery_time, real_delivery_time,
-    desc, delivery_desc, publish_status, status, owner_id, order_id, create_time, update_time
+    id, product_id, name, budget, real_cost, period, expect_delivery_time, real_delivery_time,contract_time,
+    `desc`, delivery_desc, check_desc, publish_status, status, owner_id, order_id, create_time, update_time
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByProductId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select
-    <include refid="Base_Column_List" />
-    from t_product
-    where id = #{id,jdbcType=INTEGER}
+      t1.id ,
+      t1.product_id ,
+      t1.name ,
+      t1.budget ,
+      t1.real_cost ,
+      t1.period ,
+      t1.expect_delivery_time ,
+      t1.real_delivery_time ,
+      t1.contract_time ,
+      t1.`desc` ,
+      t1.delivery_desc ,
+      t1.check_desc ,
+      t1.publish_status ,
+      t1.status ,
+      t1.owner_id ,
+      t1.order_id ,
+      t1.create_time ,
+      t1.update_time ,
+      t2.phone ,
+      t2.real_name
+    from t_product t1
+    left join t_user t2
+    on t1.owner_id = t2.id
+    where t1.id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_product
@@ -36,14 +61,15 @@
   <insert id="insert" parameterType="com.third.enterprise.bean.Product" >
     insert into t_product (id, product_id, name,
       budget, real_cost, period, 
-      expect_delivery_time, real_delivery_time, desc, 
-      delivery_desc, publish_status, status, 
+      expect_delivery_time, real_delivery_time,contract_time, `desc`,
+      delivery_desc,check_desc, publish_status, status,
       owner_id, order_id, create_time, 
       update_time)
     values (#{id,jdbcType=INTEGER}, #{productId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
       #{budget,jdbcType=DECIMAL}, #{realCost,jdbcType=DECIMAL}, #{period,jdbcType=INTEGER}, 
-      #{expectDeliveryTime,jdbcType=DATE}, #{realDeliveryTime,jdbcType=DATE}, #{desc,jdbcType=VARCHAR}, 
-      #{deliveryDesc,jdbcType=VARCHAR}, #{publishStatus,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{expectDeliveryTime,jdbcType=DATE}, #{realDeliveryTime,jdbcType=DATE},
+      #{contractTime,jdbcType=DATE},#{desc,jdbcType=VARCHAR}, #{deliveryDesc,jdbcType=VARCHAR},
+      #{checkDesc,jdbcType=VARCHAR}, #{publishStatus,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR},
       #{ownerId,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
@@ -75,7 +101,7 @@
         real_delivery_time,
       </if>
       <if test="desc != null" >
-        desc,
+        `desc`,
       </if>
       <if test="deliveryDesc != null" >
         delivery_desc,
@@ -174,11 +200,17 @@
       <if test="realDeliveryTime != null" >
         real_delivery_time = #{realDeliveryTime,jdbcType=DATE},
       </if>
+      <if test="contractTime != null" >
+        contract_time = #{contractTime,jdbcType=DATE},
+      </if>
       <if test="desc != null" >
-        desc = #{desc,jdbcType=VARCHAR},
+        `desc` = #{desc,jdbcType=VARCHAR},
       </if>
       <if test="deliveryDesc != null" >
         delivery_desc = #{deliveryDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="checkDesc != null" >
+        check_desc = #{checkDesc,jdbcType=VARCHAR},
       </if>
       <if test="publishStatus != null" >
         publish_status = #{publishStatus,jdbcType=VARCHAR},
@@ -192,12 +224,6 @@
       <if test="orderId != null" >
         order_id = #{orderId,jdbcType=INTEGER},
       </if>
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null" >
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -210,8 +236,10 @@
       period = #{period,jdbcType=INTEGER},
       expect_delivery_time = #{expectDeliveryTime,jdbcType=DATE},
       real_delivery_time = #{realDeliveryTime,jdbcType=DATE},
+      contract_time = #{contractTime,jdbcType=DATE},
       desc = #{desc,jdbcType=VARCHAR},
       delivery_desc = #{deliveryDesc,jdbcType=VARCHAR},
+      check_desc = #{checkDesc,jdbcType=VARCHAR},
       publish_status = #{publishStatus,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
       owner_id = #{ownerId,jdbcType=INTEGER},
@@ -236,10 +264,10 @@
     <if test="status != null and status != ''">
       and status = #{status}
     </if>
-    <if test="publishTimeStart != null">
+    <if test="publishTimeStart != null and publishTimeStart!= ''">
       and create_time >= #{publishTimeStart}
     </if>
-    <if test="publishTimeEnd != null">
+    <if test="publishTimeEnd != null and publishTimeStart != ''">
       and create_time <![CDATA[<=]]> #{publishTimeEnd}
     </if>
   </select>
@@ -259,10 +287,10 @@
     <if test="status == null or status == ''">
       and status in('3','4')
     </if>
-    <if test="deliveryTimeStart != null">
+    <if test="deliveryTimeStart != null and deliveryTimeStart!= ''">
       and real_delivery_time >= #{deliveryTimeStart}
     </if>
-    <if test="deliveryTimeEnd != null">
+    <if test="deliveryTimeEnd != null and deliveryTimeStart != ''">
       and real_delivery_time <![CDATA[<=]]> #{deliveryTimeEnd}
     </if>
   </select>
@@ -272,4 +300,14 @@
     set status = #{status}
     where id = #{productId}
   </update>
+
+  <select id="statProduct" resultType="com.third.enterprise.bean.response.ProductStatResponse">
+    SELECT
+      sum(1) totalCount ,
+      sum(CASE STATUS WHEN 2 THEN 1 ELSE 0 END) doingCount ,
+      sum(CASE STATUS WHEN 4 THEN 1 ELSE 0 END) finishCount
+    FROM
+      t_product
+  </select>
+
 </mapper>

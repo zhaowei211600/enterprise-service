@@ -17,13 +17,17 @@ public class Product {
 
     private Integer period;
 
-    private Date expectDeliveryTime;
+    private String expectDeliveryTime;
 
-    private Date realDeliveryTime;
+    private String realDeliveryTime;
+
+    private String contractTime;
 
     private String desc;
 
     private String deliveryDesc;
+
+    private String checkDesc;
 
     private String publishStatus;
 
@@ -36,6 +40,10 @@ public class Product {
     private Date createTime;
 
     private Date updateTime;
+
+    private String phone;
+
+    private String realName;
 
     public Integer getId() {
         return id;
@@ -85,19 +93,19 @@ public class Product {
         this.period = period;
     }
 
-    public Date getExpectDeliveryTime() {
+    public String getExpectDeliveryTime() {
         return expectDeliveryTime;
     }
 
-    public void setExpectDeliveryTime(Date expectDeliveryTime) {
+    public void setExpectDeliveryTime(String expectDeliveryTime) {
         this.expectDeliveryTime = expectDeliveryTime;
     }
 
-    public Date getRealDeliveryTime() {
+    public String getRealDeliveryTime() {
         return realDeliveryTime;
     }
 
-    public void setRealDeliveryTime(Date realDeliveryTime) {
+    public void setRealDeliveryTime(String realDeliveryTime) {
         this.realDeliveryTime = realDeliveryTime;
     }
 
@@ -163,5 +171,37 @@ public class Product {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getContractTime() {
+        return contractTime;
+    }
+
+    public void setContractTime(String contractTime) {
+        this.contractTime = contractTime;
+    }
+
+    public String getCheckDesc() {
+        return checkDesc;
+    }
+
+    public void setCheckDesc(String checkDesc) {
+        this.checkDesc = checkDesc;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
     }
 }

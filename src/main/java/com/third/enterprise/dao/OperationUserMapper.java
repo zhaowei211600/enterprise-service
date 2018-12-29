@@ -24,4 +24,6 @@ public interface OperationUserMapper {
     OperationUser selectUserAndRolesByAccount(String account);
 
     List<OperationUser> listOperationUser(OperationUserListRequest request);
+
+    OperationUser selectUserAndRolesById(Integer id);
 }

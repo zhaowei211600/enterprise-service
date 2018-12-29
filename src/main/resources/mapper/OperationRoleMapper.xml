@@ -179,4 +179,14 @@
         ON b.menu_id = c.id
     WHERE a.id = #{roleId}
   </select>
+
+  <select id="allRoles" resultMap="BaseResultMap">
+    SELECT
+      id ,
+      `name`,
+      `desc`,
+      `rank`
+    FROM
+    t_operation_role
+  </select>
 </mapper>

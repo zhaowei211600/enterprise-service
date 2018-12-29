@@ -41,7 +41,7 @@ public final class Constants {
     public static final String ROLE_BIND_ERROR_MESSAGE = "角色已绑定，无法删除";
 
     public static final String PRODUCT_STATE_ERROR_CODE = "10008";
-    public static final String PRODUCT_STATE_ERROR_MESSAGE = "项目状态不正确，无法验收";
+    public static final String PRODUCT_STATE_ERROR_MESSAGE = "项目状态不正确";
 
     public static final String FILE_HANDLE_ERROR_CODE = "10009";
     public static final String FILE_HANDLE_ERROR_MESSAGE = "文件处理失败";
@@ -58,10 +58,17 @@ public final class Constants {
     public static final String REGISTER_ERROR_CODE = "11004";
     public static final String REGISTER_ERROR_MESSAGE = "注册失败";
 
+    public static final String MESSAGE_CODE_ERROR_CODE = "11005";
+    public static final String MESSAGE_CODE_ERROR_MESSAGE = "短信验证码错误";
+
+    public static final String INCONSISTENT_PASSWORD_ERROR_CODE = "11006";
+    public static final String INCONSISTENT_PASSWORD_ERROR_MESSAGE = "两次密码输入不一致";
 
     public class RedisKey{
 
         public static final String OPERATION_REGISTER = "operation_register:";
+
+        public static final String CUSTOM_REGISTER = "custom_register:";
 
     }
 
@@ -85,5 +92,25 @@ public final class Constants {
         public static final String WAIT_CHECK = "3";
 
         public static final String ALREADLY_CHECKED = "4";
+    }
+
+    public class PublishState{
+
+        public static final String WAIT = "0";
+
+        public static final String PUBLISHED = "1";
+
+        public static final String REVOKE = "2";
+    }
+
+    public class UserState{
+
+        public static final String WAIT_CONFIRM = "0";
+
+        public static final String PASSED = "1";
+
+        public static final String FAILED = "2";
+
+        public static final String STOPED = "3";
     }
 }
