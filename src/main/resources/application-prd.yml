@@ -5,9 +5,9 @@ spring:
     name: enterprise-service
 
   datasource:
-    url: jdbc:mysql://127.0.0.1/enterprise
-    username: root
-    password: Baiwang.12366*24
+    url: jdbc:mysql://rm-2ze5x7mjlu4g13kmv.mysql.rds.aliyuncs.com/enterprise
+    username: find_helper
+    password: qwe123!@#
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       minimum-idle: 5
@@ -42,12 +42,12 @@ spring:
     time-zone: GMT+8
 
 server:
-  port: 8080
+  port: 10001
 mybatis:
   mapper-locations: classpath:mapper/*Mapper.xml
 logging:
-  path: /Users/zhaowei/
+  path: /home/logs/
 
 
 file:
-  path: /Users/zhaowei/
+  path: /home/data/

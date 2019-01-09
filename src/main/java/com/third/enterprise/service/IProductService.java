@@ -26,4 +26,8 @@ public interface IProductService {
 
     ProductStatResponse statProduct();
 
+    List<Product> listChooseProduct(ProductListRequest request);
+
+    boolean applyProduct(Product product);
+
 }

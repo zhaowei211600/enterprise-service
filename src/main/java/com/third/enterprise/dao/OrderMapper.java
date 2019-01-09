@@ -21,7 +21,10 @@ public interface OrderMapper {
     int updateByPrimaryKey(Order record);
 
     int updateOrderStatus(@Param("orderId") Integer orderId,
-                              @Param("status") String status);
+                          @Param("status") String status);
 
     List<Order> listOrder(OperationRoleRequest request);
+
+    int failedOtherOrder(@Param("productId") Integer productId,
+                         @Param("userId")Integer userId);
 }

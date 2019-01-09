@@ -29,4 +29,6 @@ public interface ProductMapper {
                                 @Param("status") String status);
 
     ProductStatResponse statProduct();
+
+    List<Product> listChooseProduct(ProductListRequest request);
 }

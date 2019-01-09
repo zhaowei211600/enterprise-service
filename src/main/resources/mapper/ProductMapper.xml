@@ -22,6 +22,7 @@
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="phone" property="phone" jdbcType="VARCHAR"/>
     <result column="real_name" property="realName" jdbcType="VARCHAR"/>
+    <result column="doing_product" property="doingProduct" jdbcType="INTEGER"/>
   </resultMap>
   <sql id="Base_Column_List" >
     id, product_id, name, budget, real_cost, period, expect_delivery_time, real_delivery_time,contract_time,
@@ -308,6 +309,82 @@
       sum(CASE STATUS WHEN 4 THEN 1 ELSE 0 END) finishCount
     FROM
       t_product
+  </select>
+
+  <!--<select id="countListChooseProduct" resultType="java.lang.Integer"
+          parameterType="com.third.enterprise.bean.request.ProductListRequest">
+    select
+      count(1)
+    from t_order t1
+    left join t_product t2
+    on t1.product_id = t2.id
+    left join t_user t3
+    on t1.user_id = t3.id
+    left join(
+    select owner_id,count(1) doing_product from t_product where `status` = '2' GROUP BY owner_id
+    )t4
+    on t1.user_id = t4.owner_id
+    where t1.`status` = '1' and t2.`status` = '1'
+    <if test="productName != null and productName != ''">
+      and t2.name like concat('%',#{productName},'%')
+    </if>
+    <if test="realName != null and realName != ''">
+      and t3.real_name like concat('%',#{realName},'%')
+    </if>
+    <if test="phone != null and phone != ''">
+      and t3.phone = #{phone}
+    </if>
+    <if test="doingProduct != null and doingProduct != 0">
+      and t4.doing_product = #{doingProduct}
+    </if>
+  </select>-->
+
+  <select id="listChooseProduct" resultMap="BaseResultMap"
+          parameterType="com.third.enterprise.bean.request.ProductListRequest">
+    select
+      t1.id order_id,
+      t2.id ,
+      t2.product_id ,
+      t2.name ,
+      t2.budget ,
+      t2.real_cost ,
+      t2.period ,
+      t2.expect_delivery_time ,
+      t2.real_delivery_time ,
+      t2.contract_time ,
+      t2.`desc` ,
+      t2.delivery_desc ,
+      t2.check_desc ,
+      t2.publish_status ,
+      t2.status ,
+      t2.owner_id ,
+      t2.create_time ,
+      t2.update_time ,
+      t3.real_name,
+      t3.phone,
+      ifnull(t4.doing_product,0) doing_product
+    from t_order t1
+    left join t_product t2
+    on t1.product_id = t2.id
+    left join t_user t3
+    on t1.user_id = t3.id
+    left join(
+    select owner_id,count(1) doing_product from t_product where `status` = '2' GROUP BY owner_id
+    )t4
+    on t1.user_id = t4.owner_id
+    where t1.`status` = '1' and t2.`status` = '1'
+    <if test="productName != null and productName != ''">
+      and t2.name like concat('%',#{productName},'%')
+    </if>
+    <if test="realName != null and realName != ''">
+      and t3.real_name like concat('%',#{realName},'%')
+    </if>
+    <if test="phone != null and phone != ''">
+      and t3.phone = #{phone}
+    </if>
+    <if test="doingProduct != null and doingProduct != 0">
+      and t4.doing_product = #{doingProduct}
+    </if>
   </select>
 
 </mapper>

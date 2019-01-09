@@ -59,7 +59,9 @@ public class ProductServiceImpl implements IProductService{
     @Override
     public boolean updateProduct(Product product) {
         if(productMapper.updateByPrimaryKeySelective(product) > 0){
-            return true;
+            if(orderMapper.updateOrderStatus(product.getOrderId(), Constants.OrderState.ALREADLY_CHECKED) > 0){
+                 return true;
+            }
         }
         return false;
     }
@@ -88,6 +90,7 @@ public class ProductServiceImpl implements IProductService{
             product.setStatus(Constants.ProductState.ON_DOING);
             if(productMapper.updateByPrimaryKeySelective(product) > 0){
                 if(orderMapper.updateOrderStatus(orderId , Constants.OrderState.CHECKED) > 0){
+                    orderMapper.failedOtherOrder(productId, userId);
                     return true;
                 }
             }
@@ -106,5 +109,21 @@ public class ProductServiceImpl implements IProductService{
     @Override
     public ProductStatResponse statProduct() {
         return productMapper.statProduct();
+    }
+
+    @Override
+    public List<Product> listChooseProduct(ProductListRequest request) {
+        PageHelper.startPage(request.getPageNum(), request.getPageSize());
+        return productMapper.listChooseProduct(request);
+    }
+
+    @Override
+    public boolean applyProduct(Product product) {
+        if(productMapper.updateByPrimaryKeySelective(product) > 0){
+             if(orderMapper.updateOrderStatus(product.getOrderId(), Constants.OrderState.WAIT_CHECK) > 0){
+                  return true;
+             }
+        }
+        return false;
     }
 }

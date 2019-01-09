@@ -1,6 +1,7 @@
 package com.third.enterprise.controller;
 
 import com.third.enterprise.bean.Product;
+import com.third.enterprise.bean.request.ProductApplyRequest;
 import com.third.enterprise.bean.request.ProductCheckRequest;
 import com.third.enterprise.bean.request.ProductListRequest;
 import com.third.enterprise.bean.response.UnifiedResult;
@@ -11,6 +12,7 @@ import com.third.enterprise.util.Page;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -36,6 +40,20 @@ public class ProductController {
     public UnifiedResult<List<Product>> listProduct(ProductListRequest request){
 
         List<Product> productList = productService.listPublishProduct(request);
+        if(productList != null && productList.size() > 0){
+            return UnifiedResultBuilder.successResult(Constants.SUCCESS_MESSAGE, productList, Page.toPage(productList).getTotal());
+        }
+        return UnifiedResultBuilder.errorResult(Constants.EMPTY_DATA_ERROR_CODE,
+                Constants.EMPTY_DATA_ERROR_MESSAGE);
+    }
+
+    /**
+     * 项目接单确认列表
+     */
+    @PostMapping("/list/choose")
+    public UnifiedResult<List<Product>> listChooseProduct(ProductListRequest request){
+
+        List<Product> productList = productService.listChooseProduct(request);
         if(productList != null && productList.size() > 0){
             return UnifiedResultBuilder.successResult(Constants.SUCCESS_MESSAGE, productList, Page.toPage(productList).getTotal());
         }
@@ -88,7 +106,11 @@ public class ProductController {
                 return UnifiedResultBuilder.errorResult(Constants.PRODUCT_STATE_ERROR_CODE,
                         Constants.PRODUCT_STATE_ERROR_MESSAGE);
             }
-            product.setRealCost(new BigDecimal(request.getRealCost()));
+            if(StringUtils.isEmpty(request.getRealCost())){
+                product.setRealCost(product.getBudget());
+            }else{
+                product.setRealCost(new BigDecimal(request.getRealCost()));
+            }
             product.setCheckDesc(request.getCheckDesc());
             product.setStatus(Constants.ProductState.ALREADLY_CHECKED);
             if(productService.updateProduct(product)){
@@ -141,5 +163,22 @@ public class ProductController {
         }
         return UnifiedResultBuilder.errorResult(Constants.DATA_HANDLE_ERROR_CODE,
                 Constants.DATA_HANDLE_ERROR_MESSAGE);
+    }
+
+    @PostMapping("/apply")
+    public UnifiedResult productApply(ProductApplyRequest request){
+
+        Product product = productService.findByProductId(request.getProductId());
+        if(product != null){
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            product.setStatus(Constants.ProductState.WAIT_CHECK);
+            product.setDeliveryDesc(request.getDeliveryDesc());
+            product.setRealDeliveryTime(format.format(new Date()));
+            if(productService.applyProduct(product)){
+                return UnifiedResultBuilder.defaultSuccessResult();
+            }
+        }
+        return UnifiedResultBuilder.errorResult(Constants.EMPTY_DATA_ERROR_CODE,
+                Constants.EMPTY_DATA_ERROR_MESSAGE);
     }
 }

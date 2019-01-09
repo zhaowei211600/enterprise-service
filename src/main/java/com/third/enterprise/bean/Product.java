@@ -45,6 +45,8 @@ public class Product {
 
     private String realName;
 
+    private Integer doingProduct;
+
     public Integer getId() {
         return id;
     }
@@ -203,5 +205,13 @@ public class Product {
 
     public void setRealName(String realName) {
         this.realName = realName;
+    }
+
+    public Integer getDoingProduct() {
+        return doingProduct;
+    }
+
+    public void setDoingProduct(Integer doingProduct) {
+        this.doingProduct = doingProduct;
     }
 }

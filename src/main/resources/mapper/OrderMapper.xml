@@ -132,4 +132,10 @@
        and t1.product_id = #{productId}
     </if>
   </select>
+
+  <update id="failedOtherOrder">
+    update t_order set status = '5'
+    where product_id = #{productId}
+    and user_id != #{userId}
+  </update>
 </mapper>

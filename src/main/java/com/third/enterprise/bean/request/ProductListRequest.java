@@ -16,6 +16,12 @@ public class ProductListRequest {
 
     private String deliveryTimeEnd;
 
+    private Integer doingProduct;
+
+    private String phone;
+
+    private String realName;
+
     private Integer pageNum = 1;
 
     private Integer pageSize = 10;
@@ -90,5 +96,29 @@ public class ProductListRequest {
 
     public void setPageSize(Integer pageSize) {
         this.pageSize = pageSize;
+    }
+
+    public Integer getDoingProduct() {
+        return doingProduct;
+    }
+
+    public void setDoingProduct(Integer doingProduct) {
+        this.doingProduct = doingProduct;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
     }
 }
