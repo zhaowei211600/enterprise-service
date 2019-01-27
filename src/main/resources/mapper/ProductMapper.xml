@@ -18,6 +18,7 @@
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="owner_id" property="ownerId" jdbcType="INTEGER" />
     <result column="order_id" property="orderId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="phone" property="phone" jdbcType="VARCHAR"/>
@@ -253,7 +254,7 @@
   <select id="listProduct" resultMap="BaseResultMap"
           parameterType="com.third.enterprise.bean.request.ProductListRequest" >
     select
-    <include refid="Base_Column_List" />
+        <include refid="Base_Column_List" />
     from t_product
     where 1=1
     <if test="productName != null and productName != ''">
@@ -343,6 +344,7 @@
           parameterType="com.third.enterprise.bean.request.ProductListRequest">
     select
       t1.id order_id,
+      t1.user_id ,
       t2.id ,
       t2.product_id ,
       t2.name ,

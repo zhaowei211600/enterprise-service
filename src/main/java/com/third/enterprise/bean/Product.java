@@ -37,6 +37,8 @@ public class Product {
 
     private Integer orderId;
 
+    private Integer userId;
+
     private Date createTime;
 
     private Date updateTime;
@@ -213,5 +215,13 @@ public class Product {
 
     public void setDoingProduct(Integer doingProduct) {
         this.doingProduct = doingProduct;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }
