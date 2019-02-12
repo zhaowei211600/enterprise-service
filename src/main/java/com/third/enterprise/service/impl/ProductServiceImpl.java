@@ -1,6 +1,7 @@
 package com.third.enterprise.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.third.enterprise.bean.Order;
 import com.third.enterprise.bean.Product;
 import com.third.enterprise.bean.request.ProductListRequest;
 import com.third.enterprise.bean.response.ProductStatResponse;
@@ -84,9 +85,11 @@ public class ProductServiceImpl implements IProductService{
     public boolean chooseUser(Integer productId, Integer userId, Integer orderId) {
 
         Product product = productMapper.selectByProductId(productId);
-        if(product != null){
+        Order order = orderMapper.selectByPrimaryKey(orderId);
+        if(product != null && order != null){
             product.setOrderId(orderId);
             product.setOwnerId(userId);
+            product.setExpectCost(order.getExpectCost());
             product.setStatus(Constants.ProductState.ON_DOING);
             if(productMapper.updateByPrimaryKeySelective(product) > 0){
                 if(orderMapper.updateOrderStatus(orderId , Constants.OrderState.CHECKED) > 0){

@@ -1,5 +1,6 @@
 package com.third.enterprise.bean;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class Order {
@@ -21,6 +22,8 @@ public class Order {
     private String phone;
 
     private String registerTime;
+
+    private BigDecimal expectCost;
 
     public Integer getId() {
         return id;
@@ -92,5 +95,13 @@ public class Order {
 
     public void setRegisterTime(String registerTime) {
         this.registerTime = registerTime;
+    }
+
+    public BigDecimal getExpectCost() {
+        return expectCost;
+    }
+
+    public void setExpectCost(BigDecimal expectCost) {
+        this.expectCost = expectCost;
     }
 }

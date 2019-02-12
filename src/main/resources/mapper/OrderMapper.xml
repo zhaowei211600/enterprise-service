@@ -11,10 +11,11 @@
     <result column="real_name" property="realName" jdbcType="VARCHAR" />
     <result column="phone" property="phone" jdbcType="VARCHAR" />
     <result column="register_time" property="registerTime" jdbcType="TIMESTAMP" />
+    <result column="expect_cost" property="expectCost" jdbcType="DECIMAL" />
 
   </resultMap>
   <sql id="Base_Column_List" >
-    id, user_id, product_id, status, create_time, update_time
+    id, user_id, product_id, expect_cost, status, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select
@@ -46,6 +47,9 @@
       <if test="productId != null" >
         product_id,
       </if>
+      <if test="expectCost != null" >
+        expect_cost,
+      </if>
       <if test="status != null" >
         status,
       </if>
@@ -65,6 +69,9 @@
       </if>
       <if test="productId != null" >
         #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="expectCost != null" >
+        #{expectCost,jdbcType=DECIMAL},
       </if>
       <if test="status != null" >
         #{status,jdbcType=VARCHAR},
@@ -118,6 +125,7 @@
       t1.id ,
       t1.user_id ,
       t1.product_id ,
+      t1.expect_cost,
       t1.status ,
       t1.create_time ,
       t1.update_time ,

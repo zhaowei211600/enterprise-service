@@ -113,4 +113,20 @@ public class CustomController {
         return UnifiedResultBuilder.errorResult(Constants.DATA_HANDLE_ERROR_CODE,
                 Constants.DATA_HANDLE_ERROR_MESSAGE);
     }
+
+    @RequestMapping("/reset")
+    public UnifiedResult resetUserPassword(Integer userId, String password){
+
+        User customer = userService.findByUserId(userId);
+        if(customer != null && !StringUtils.isEmpty(password)){
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            final String rawPassword = encoder.encode(password);
+            customer.setPassword(rawPassword);
+            if(userService.updateUser(customer)){
+                return UnifiedResultBuilder.defaultSuccessResult();
+            }
+        }
+        return UnifiedResultBuilder.errorResult(Constants.DATA_HANDLE_ERROR_CODE,
+                Constants.DATA_HANDLE_ERROR_MESSAGE);
+    }
 }
