@@ -1,4 +1,4 @@
-import com.third.enterprise.service.security.OperationToken;
+import com.third.trading.service.security.OperationToken;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication
 @EnableAutoConfiguration
 @EnableTransactionManagement
-@ComponentScan(basePackages = "com.third.enterprise")
+@ComponentScan(basePackages = "com.third.trading")
 @MapperScan("com.third.enterprise.dao")
 @EnableConfigurationProperties(OperationToken.class)
 @ServletComponentScan
