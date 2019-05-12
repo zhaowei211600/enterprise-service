@@ -146,4 +146,12 @@
     where product_id = #{productId}
     and user_id != #{userId}
   </update>
+
+  <update id="chooseUser">
+    update t_order set status = '2'
+    where id in
+    <foreach collection="list" item="orderId" index="index" separator="," open="(" close=")">
+      #{orderId}
+    </foreach>
+  </update>
 </mapper>

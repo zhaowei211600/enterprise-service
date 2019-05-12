@@ -16,6 +16,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -156,9 +157,14 @@ public class ProductController {
     }
 
     @RequestMapping("/choose")
-    public UnifiedResult chooseUser(Integer productId, Integer userId , Integer orderId){
+    public UnifiedResult chooseUser(@RequestParam("orderIds[]") Integer[] orderIds, Integer productId){
 
-        if(productService.chooseUser(productId, userId, orderId)){
+        if(StringUtils.isEmpty(orderIds)){
+            return UnifiedResultBuilder.errorResult(Constants.PARAMETER_NOT_VALID_ERROR_CODE,
+                    Constants.PARAMETER_NOT_VALID_ERROR_MESSAGE);
+        }
+        //String[] orderIdList = orderIds.split(",");
+        if(productService.chooseUser(orderIds)){
             return UnifiedResultBuilder.defaultSuccessResult();
         }
         return UnifiedResultBuilder.errorResult(Constants.DATA_HANDLE_ERROR_CODE,

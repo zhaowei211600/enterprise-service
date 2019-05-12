@@ -27,4 +27,6 @@ public interface OrderMapper {
 
     int failedOtherOrder(@Param("productId") Integer productId,
                          @Param("userId")Integer userId);
+
+    boolean chooseUser(@Param("list") Integer[] orderIdList);
 }

@@ -1,6 +1,7 @@
 package com.third.enterprise.service;
 
 import com.third.enterprise.bean.Product;
+import com.third.enterprise.bean.ProductAttachment;
 import com.third.enterprise.bean.request.ProductListRequest;
 import com.third.enterprise.bean.response.ProductStatResponse;
 
@@ -20,7 +21,7 @@ public interface IProductService {
 
     boolean updateStatus(Integer productId, String status);
 
-    boolean chooseUser(Integer productId, Integer userId, Integer orderId);
+    boolean chooseUser(Integer[] orderIdList);
 
     boolean revokeProduct(Integer productId);
 
@@ -29,5 +30,7 @@ public interface IProductService {
     List<Product> listChooseProduct(ProductListRequest request);
 
     boolean applyProduct(Product product);
+
+    boolean saveAttachment(ProductAttachment attachment);
 
 }

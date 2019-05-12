@@ -1,9 +1,11 @@
 package com.third.enterprise.controller;
 
 
+import com.third.enterprise.bean.ProductAttachment;
 import com.third.enterprise.bean.response.UnifiedResult;
 import com.third.enterprise.bean.response.UnifiedResultBuilder;
 import com.third.enterprise.integration.IFileService;
+import com.third.enterprise.service.IProductService;
 import com.third.enterprise.util.Constants;
 import com.third.enterprise.util.ErrorUtil;
 import com.third.enterprise.util.FileTypeEnum;
@@ -21,6 +23,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Random;
 
 @RestController
@@ -31,6 +34,9 @@ public class FileController {
 
     @Autowired
     private IFileService fileService;
+
+    @Autowired
+    private IProductService productService;
 
     private static final String UPLOAD_FILE_PREFIX = "user_";
 
@@ -66,6 +72,37 @@ public class FileController {
             }
         }
         logger.info("上传文件后缀不合法:{}", file.getOriginalFilename());
+        return UnifiedResultBuilder.errorResult(Constants.FILE_HANDLE_ERROR_CODE,
+                Constants.FILE_HANDLE_ERROR_MESSAGE);
+    }
+
+    @RequestMapping("/attachment")
+    public UnifiedResult uploadAttachment(@RequestParam("file") MultipartFile file,
+                                          @RequestParam("productId") Integer productId) throws IOException {
+
+        logger.info("文件上传大小：{}", file.getSize());
+        String fileSuffix = "";
+
+        //未匹配出实际的格式
+        String originalName = file.getOriginalFilename();
+        if(!StringUtils.isEmpty(originalName)){
+            fileSuffix = originalName.substring(originalName.lastIndexOf(".") + 1);
+        }
+        HashMap<String,String> fileAttr = new HashMap<>(2);
+        String fileName = generateFileName(fileSuffix);
+        if(fileService.uploadFile(file, fileName)){
+            fileAttr.put("fileName", fileName);
+            fileAttr.put("originalName", originalName);
+            ProductAttachment attachment = new ProductAttachment();
+            attachment.setProductId(productId);
+            attachment.setFileName(originalName);
+            attachment.setFilePath(fileName);
+            attachment.setStatus("1");
+            if(productService.saveAttachment(attachment)){
+                return UnifiedResultBuilder.successResult(Constants.SUCCESS_MESSAGE,
+                        fileAttr);
+            }
+        }
         return UnifiedResultBuilder.errorResult(Constants.FILE_HANDLE_ERROR_CODE,
                 Constants.FILE_HANDLE_ERROR_MESSAGE);
     }

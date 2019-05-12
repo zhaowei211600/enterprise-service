@@ -5,9 +5,9 @@ spring:
     name: enterprise-service
 
   datasource:
-    url: jdbc:mysql://rm-2ze5x7mjlu4g13kmv.mysql.rds.aliyuncs.com/enterprise
-    username: find_helper
-    password: qwe123!@#
+    url: jdbc:mysql://rm-2ze1oiwuqgur01f4q.mysql.rds.aliyuncs.com/enterprise
+    username: zhaobangshou
+    password: 123qweQWE
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       minimum-idle: 5

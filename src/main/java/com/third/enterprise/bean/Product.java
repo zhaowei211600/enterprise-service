@@ -17,7 +17,7 @@ public class Product {
 
     private BigDecimal realCost;
 
-    private Integer period;
+    private String period;
 
     private String expectDeliveryTime;
 
@@ -50,6 +50,19 @@ public class Product {
     private String realName;
 
     private Integer doingProduct;
+
+    //2019-05-08新增
+    private String type;
+
+    private String attr;
+
+    private String costType;
+
+    private String serviceCost;
+
+    private String detail;
+
+    private String fileNameList;
 
     public Integer getId() {
         return id;
@@ -91,11 +104,11 @@ public class Product {
         this.realCost = realCost;
     }
 
-    public Integer getPeriod() {
+    public String getPeriod() {
         return period;
     }
 
-    public void setPeriod(Integer period) {
+    public void setPeriod(String period) {
         this.period = period;
     }
 
@@ -233,5 +246,54 @@ public class Product {
 
     public void setExpectCost(BigDecimal expectCost) {
         this.expectCost = expectCost;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getAttr() {
+        return attr;
+    }
+
+    public void setAttr(String attr) {
+        this.attr = attr;
+    }
+
+    public String getCostType() {
+        return costType;
+    }
+
+    public void setCostType(String costType) {
+        this.costType = costType;
+    }
+
+
+    public String getServiceCost() {
+        return serviceCost;
+    }
+
+    public void setServiceCost(String serviceCost) {
+        this.serviceCost = serviceCost;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
+
+    public String getFileNameList() {
+        return fileNameList;
+    }
+
+    public void setFileNameList(String fileNameList) {
+        this.fileNameList = fileNameList;
     }
 }
