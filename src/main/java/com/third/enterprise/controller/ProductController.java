@@ -1,11 +1,13 @@
 package com.third.enterprise.controller;
 
-import com.third.enterprise.bean.Product;
+import com.third.enterprise.bean.*;
 import com.third.enterprise.bean.request.ProductApplyRequest;
 import com.third.enterprise.bean.request.ProductCheckRequest;
 import com.third.enterprise.bean.request.ProductListRequest;
 import com.third.enterprise.bean.response.UnifiedResult;
 import com.third.enterprise.bean.response.UnifiedResultBuilder;
+import com.third.enterprise.service.ICheckOrderService;
+import com.third.enterprise.service.IOrderService;
 import com.third.enterprise.service.IProductService;
 import com.third.enterprise.util.Constants;
 import com.third.enterprise.util.Page;
@@ -14,10 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
@@ -33,6 +32,12 @@ public class ProductController {
 
     @Autowired
     private IProductService productService;
+
+    @Autowired
+    private IOrderService orderService;
+
+    @Autowired
+    private ICheckOrderService checkOrderService;
 
     /**
      * 项目发布列表和统计列表
@@ -87,7 +92,7 @@ public class ProductController {
     /**
      * 项目验收列表
      */
-    @PostMapping("/list/check")
+    /*@PostMapping("/list/check")
     public UnifiedResult<List<Product>> checkProductList(ProductListRequest request){
 
         List<Product> productList = productService.listCheckProduct(request);
@@ -96,9 +101,9 @@ public class ProductController {
         }
         return UnifiedResultBuilder.errorResult(Constants.EMPTY_DATA_ERROR_CODE,
                 Constants.EMPTY_DATA_ERROR_MESSAGE);
-    }
+    }*/
 
-    @PostMapping("/check")
+    /*@PostMapping("/check")
     public UnifiedResult checkProduct(ProductCheckRequest request){
 
         Product product = productService.findByProductId(request.getProductId());
@@ -120,8 +125,9 @@ public class ProductController {
         }
         return UnifiedResultBuilder.errorResult(Constants.DATA_HANDLE_ERROR_CODE,
                 Constants.DATA_HANDLE_ERROR_MESSAGE);
-    }
+    }*/
 
+    //下架
     @PostMapping("/revoke")
     public UnifiedResult revokeProduct(Integer productId){
 
@@ -164,20 +170,52 @@ public class ProductController {
                     Constants.PARAMETER_NOT_VALID_ERROR_MESSAGE);
         }
         //String[] orderIdList = orderIds.split(",");
-        if(productService.chooseUser(orderIds)){
+        if(productService.chooseUser(orderIds, productId)){
             return UnifiedResultBuilder.defaultSuccessResult();
         }
         return UnifiedResultBuilder.errorResult(Constants.DATA_HANDLE_ERROR_CODE,
                 Constants.DATA_HANDLE_ERROR_MESSAGE);
     }
 
+    /***
+     * 结项申请
+     */
     @PostMapping("/apply")
     public UnifiedResult productApply(ProductApplyRequest request){
 
+        Order order = orderService.selectById(request.getOrderId());
+        if(order == null){
+            return UnifiedResultBuilder.errorResult(Constants.ACCOUNT_EXISTS_ERROR_CODE,
+                    Constants.ACCOUNT_EXISTS_ERROR_MESSAGE);
+        }
+
+        //TODO 保存结算信息
         Product product = productService.findByProductId(request.getProductId());
         if(product != null){
+            CheckOrder checkOrder = new CheckOrder();
+            checkOrder.setUserId(order.getUserId());
+            checkOrder.setProductId(product.getId());
+            checkOrder.setOrderId(request.getOrderId());
+            checkOrder.setFinishDesc(request.getDeliveryDesc());
+
+            if(checkOrderService.hasOpenCheckOrder(request.getOrderId())){
+                return UnifiedResultBuilder.errorResult(Constants.DATA_HANDLE_ERROR_CODE,
+                        "当前订单有待审核的验收记录！");
+            }
+            //持续性服务，可多次提交
+            if("1".equals(product.getAttr())){
+                checkOrderService.saveCheckOrder(checkOrder);
+            }else if("2".equals(product.getAttr())){
+                //一次性服务，进行中才能提交
+                if(Constants.ProductState.ON_DOING.equals(product.getStatus())){
+                    checkOrderService.saveCheckOrder(checkOrder);
+                }else{
+                    return UnifiedResultBuilder.errorResult(Constants.PRODUCT_STATE_ERROR_CODE,
+                            Constants.PRODUCT_STATE_ERROR_MESSAGE);
+                }
+            }
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-            product.setStatus(Constants.ProductState.WAIT_CHECK);
+            //product.setStatus(Constants.ProductState.WAIT_CHECK);
             product.setDeliveryDesc(request.getDeliveryDesc());
             product.setRealDeliveryTime(format.format(new Date()));
             if(productService.applyProduct(product)){
@@ -186,5 +224,38 @@ public class ProductController {
         }
         return UnifiedResultBuilder.errorResult(Constants.EMPTY_DATA_ERROR_CODE,
                 Constants.EMPTY_DATA_ERROR_MESSAGE);
+    }
+
+    @GetMapping("/file/disable")
+    public UnifiedResult disableAttachment(String filePath){
+
+        if(!StringUtils.isEmpty(filePath) && productService.disableAttachment(filePath)){
+            return UnifiedResultBuilder.defaultSuccessResult();
+        }
+        return UnifiedResultBuilder.errorResult(Constants.CALL_SERVICE_ERROR_CODE,
+                Constants.CALL_SERVICE_ERROR_MESSAGE);
+    }
+
+    @GetMapping("/file/list")
+    public UnifiedResult listFile(Integer productId){
+
+        if(!StringUtils.isEmpty(productId)){
+            List<ProductAttachment> fileList = productService.listFile(productId);
+            if(fileList != null && fileList.size() > 0){
+                return UnifiedResultBuilder.successResult(Constants.SUCCESS_MESSAGE, fileList);
+            }
+        }
+        return UnifiedResultBuilder.errorResult(Constants.CALL_SERVICE_ERROR_CODE,
+                Constants.CALL_SERVICE_ERROR_MESSAGE);
+    }
+
+    @GetMapping("/close")
+    public UnifiedResult closeProduct(Integer productId){
+
+        if(!StringUtils.isEmpty(productId) && productService.closeProduct(productId)){
+            return UnifiedResultBuilder.defaultSuccessResult();
+        }
+        return UnifiedResultBuilder.errorResult(Constants.CALL_SERVICE_ERROR_CODE,
+                Constants.CALL_SERVICE_ERROR_MESSAGE);
     }
 }

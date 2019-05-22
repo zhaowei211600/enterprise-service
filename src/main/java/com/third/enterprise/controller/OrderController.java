@@ -2,13 +2,18 @@ package com.third.enterprise.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.third.enterprise.bean.Order;
+import com.third.enterprise.bean.Product;
 import com.third.enterprise.bean.request.OperationRoleRequest;
+import com.third.enterprise.bean.request.OrderListRequest;
+import com.third.enterprise.bean.request.ProductListRequest;
 import com.third.enterprise.bean.response.UnifiedResult;
 import com.third.enterprise.bean.response.UnifiedResultBuilder;
 import com.third.enterprise.service.IOrderService;
 import com.third.enterprise.util.Constants;
+import com.third.enterprise.util.Page;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,4 +46,16 @@ public class OrderController {
         return UnifiedResultBuilder.errorResult(Constants.EMPTY_DATA_ERROR_CODE,
                 Constants.EMPTY_DATA_ERROR_MESSAGE);
     }
+
+    @PostMapping("/check/list")
+    public UnifiedResult<List<Product>> orderCheckList(OrderListRequest request){
+
+        List<Order> orderList = orderService.listCheck(request);
+        if(orderList != null && orderList.size() > 0){
+            return UnifiedResultBuilder.successResult(Constants.SUCCESS_MESSAGE, orderList, Page.toPage(orderList).getTotal());
+        }
+        return UnifiedResultBuilder.errorResult(Constants.EMPTY_DATA_ERROR_CODE,
+                Constants.EMPTY_DATA_ERROR_MESSAGE);
+    }
+
 }

@@ -13,6 +13,13 @@
     <result column="register_time" property="registerTime" jdbcType="TIMESTAMP" />
     <result column="expect_cost" property="expectCost" jdbcType="DECIMAL" />
 
+    <result column="product_name" property="productName" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="attr" property="attr" jdbcType="VARCHAR" />
+    <result column="budget" property="budget" jdbcType="VARCHAR" />
+    <result column="product_status" property="productStatus" jdbcType="VARCHAR" />
+    <result column="expect_delivery_time" property="expectDeliveryTime" jdbcType="VARCHAR" />
+
   </resultMap>
   <sql id="Base_Column_List" >
     id, user_id, product_id, expect_cost, status, create_time, update_time
@@ -153,5 +160,52 @@
     <foreach collection="list" item="orderId" index="index" separator="," open="(" close=")">
       #{orderId}
     </foreach>
+  </update>
+
+  <select id="listCheck" parameterType="com.third.enterprise.bean.request.OrderListRequest" resultMap="BaseResultMap">
+    SELECT
+        t1.id ,
+        t1.user_id ,
+        t1.product_id ,
+        t1.expect_cost,
+        t1.status ,
+        t1.create_time ,
+        t1.update_time ,
+        t2.name product_name,
+        t2.type ,
+        t2.attr ,
+        t2.budget ,
+        t2.status product_status,
+        t2.expect_delivery_time
+    FROM
+        t_order t1
+    LEFT JOIN t_product t2
+    ON t1.product_id = t2.id
+    WHERE 1=1
+    <if test="productName != '' and productName != null">
+      and t2.name = #{productName}
+    </if>
+    <if test="type != '' and type != null">
+      and t2.type = #{type}
+    </if>
+    <if test="attr != '' and attr != null">
+      and t2.attr = #{attr}
+    </if>
+    <if test="commitCheck == '1'.toString() ">
+      and t1.id in (select DISTINCT order_id from t_check_order)
+    </if>
+    <if test="commitCheck == '0'.toString() ">
+      and t1.id not in (select DISTINCT order_id from t_check_order)
+    </if>
+  </select>
+
+  <update id="closeOrder">
+     update t_order set status = '3'
+     where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="closeByProductId">
+    update t_order set status = '3'
+    where product_id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

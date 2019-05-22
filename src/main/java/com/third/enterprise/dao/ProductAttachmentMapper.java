@@ -4,6 +4,8 @@ package com.third.enterprise.dao;
 import com.third.enterprise.bean.ProductAttachment;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface ProductAttachmentMapper {
 
     int deleteByPrimaryKey(Integer id);
@@ -20,4 +22,8 @@ public interface ProductAttachmentMapper {
 
     boolean enableAttachment(@Param("productId") Integer productId,
                              @Param("list") String[] fileList);
+
+    ProductAttachment selectByFilePath(String filePath);
+
+    List<ProductAttachment> listFile(Integer productId);
 }

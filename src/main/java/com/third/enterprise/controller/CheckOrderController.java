@@ -16,13 +16,25 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/check")
+@RequestMapping("/operation/check")
 public class CheckOrderController {
 
     private static final Logger logger = LoggerFactory.getLogger(CheckOrderController.class);
 
     @Autowired
     private ICheckOrderService checkOrderService;
+
+    @PostMapping("/detail")
+    public UnifiedResult checkDetail(Integer id){
+
+        CheckOrder checkOrder = checkOrderService.selectById(id);
+        if(checkOrder != null){
+            return UnifiedResultBuilder.successResult(Constants.SUCCESS_MESSAGE,
+                    checkOrder);
+        }
+        return UnifiedResultBuilder.errorResult(Constants.EMPTY_DATA_ERROR_CODE,
+                Constants.EMPTY_DATA_ERROR_MESSAGE);
+    }
 
     @PostMapping("/history")
     public UnifiedResult checkHistory(@RequestBody CheckListRequest request){
@@ -50,8 +62,9 @@ public class CheckOrderController {
     }
 
     @PostMapping("/audit")
-    public UnifiedResult auditCheck(@RequestBody CheckOrder checkOrder){
-        //checkOrder.setAuditor(auditor);
+    public UnifiedResult auditCheck(@RequestBody CheckOrder checkOrder,
+                                    @RequestAttribute("username")String username){
+        checkOrder.setAuditor(username);
         if(checkOrderService.auditCheck(checkOrder)){
             return UnifiedResultBuilder.defaultSuccessResult();
         }
@@ -59,9 +72,9 @@ public class CheckOrderController {
                 Constants.EMPTY_DATA_ERROR_MESSAGE);
     }
 
-    @PostMapping("/list")
+    @PostMapping("/settle/list")
     public UnifiedResult settleList(CheckListRequest request){
-        List<CheckOrder> checkOrderList = checkOrderService.checkList(request);
+        List<CheckOrder> checkOrderList = checkOrderService.settleList(request);
         if(checkOrderList != null && checkOrderList.size() > 0){
             return UnifiedResultBuilder.successResult(Constants.SUCCESS_MESSAGE,
                     checkOrderList,
@@ -72,10 +85,10 @@ public class CheckOrderController {
     }
 
     @PostMapping("/settle")
-    public UnifiedResult settleCheckOrder(Integer checkOrderId,
+    public UnifiedResult settleCheckOrder(Integer id,
                                           BigDecimal amount){
 
-        CheckOrder checkOrder = checkOrderService.selectById(checkOrderId);
+        CheckOrder checkOrder = checkOrderService.selectById(id);
         if(checkOrder != null && "2".equals(checkOrder.getStatus())){
             checkOrder.setAmount(amount);
             checkOrder.setStatus("4");

@@ -19,4 +19,9 @@ public interface CheckOrderMapper {
     int updateByPrimaryKey(CheckOrder record);
 
     List<CheckOrder> checkList(CheckListRequest request);
+
+    List<CheckOrder> settleList(CheckListRequest request);
+
+    int hasOpenCheckOrder(Integer orderId);
+
 }

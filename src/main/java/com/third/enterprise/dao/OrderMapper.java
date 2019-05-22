@@ -2,6 +2,7 @@ package com.third.enterprise.dao;
 
 import com.third.enterprise.bean.Order;
 import com.third.enterprise.bean.request.OperationRoleRequest;
+import com.third.enterprise.bean.request.OrderListRequest;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -29,4 +30,10 @@ public interface OrderMapper {
                          @Param("userId")Integer userId);
 
     boolean chooseUser(@Param("list") Integer[] orderIdList);
+
+    List<Order> listCheck(OrderListRequest request);
+
+    int closeOrder(Integer id);
+
+    int closeByProductId(Integer id);
 }

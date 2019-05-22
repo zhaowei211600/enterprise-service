@@ -4,6 +4,8 @@ public class ProductApplyRequest {
 
     private Integer productId;
 
+    private Integer orderId;
+
     private String deliveryDesc;
 
     public Integer getProductId() {
@@ -12,6 +14,14 @@ public class ProductApplyRequest {
 
     public void setProductId(Integer productId) {
         this.productId = productId;
+    }
+
+    public Integer getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
     }
 
     public String getDeliveryDesc() {

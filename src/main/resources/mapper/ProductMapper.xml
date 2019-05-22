@@ -32,6 +32,8 @@
     <result column="service_cost" property="serviceCost" jdbcType="VARCHAR" />
     <result column="cost_type" property="costType" jdbcType="VARCHAR" />
 
+    <result column="on_wait" property="onWait" jdbcType="INTEGER"/>
+    <result column="on_doing" property="onDoing" jdbcType="INTEGER"/>
   </resultMap>
   <sql id="Base_Column_List" >
     id, product_id, name, budget, expect_cost,real_cost, period, expect_delivery_time, real_delivery_time,contract_time,
@@ -343,6 +345,12 @@
     where id = #{productId}
   </update>
 
+  <update id="revokeProduct">
+    update t_product
+    set publish_status = #{status}
+    where id = #{productId}
+  </update>
+
   <select id="statProduct" resultType="com.third.enterprise.bean.response.ProductStatResponse">
     SELECT
       sum(1) totalCount ,
@@ -382,51 +390,46 @@
 
   <select id="listChooseProduct" resultMap="BaseResultMap"
           parameterType="com.third.enterprise.bean.request.ProductListRequest">
+
     select
-      t1.id order_id,
-      t1.user_id ,
-      t2.id ,
-      t2.product_id ,
-      t2.name ,
-      t2.budget ,
-      t1.expect_cost,
-      t2.real_cost ,
-      t2.period ,
-      t2.expect_delivery_time ,
-      t2.real_delivery_time ,
-      t2.contract_time ,
-      t2.`desc` ,
-      t2.delivery_desc ,
-      t2.check_desc ,
-      t2.publish_status ,
-      t2.status ,
-      t2.owner_id ,
-      t2.create_time ,
-      t2.update_time ,
-      t3.real_name,
-      t3.phone,
-      ifnull(t4.doing_product,0) doing_product
-    from t_order t1
-    left join t_product t2
-    on t1.product_id = t2.id
-    left join t_user t3
-    on t1.user_id = t3.id
+        t1.id ,
+        t1.product_id ,
+        t1.name ,
+        t1.budget ,
+        t1.expect_cost,
+        t1.real_cost ,
+        t1.period ,
+        t1.expect_delivery_time ,
+        t1.real_delivery_time ,
+        t1.contract_time ,
+        t1.`desc` ,
+        t1.delivery_desc ,
+        t1.check_desc ,
+        t1.publish_status ,
+        t1.status ,
+        t1.owner_id ,
+        t1.order_id ,
+        t1.create_time ,
+        t1.update_time ,
+        t1.type,
+        t1.attr,
+        t1.detail,
+        t1.service_cost,
+        t1.cost_type,
+        ifnull(t2.on_wait,0) on_wait,
+        ifnull(t2.on_doing,0) on_doing
+    from t_product t1
     left join(
-    select owner_id,count(1) doing_product from t_product where `status` = '2' GROUP BY owner_id
-    )t4
-    on t1.user_id = t4.owner_id
-    where t1.`status` = '1' and t2.`status` = '1'
+        select product_id ,
+            sum(case status when '1' then 1 else 0 end) as on_wait,
+            sum(case status when '2' then 1 else 0 end) as on_doing
+        from t_order
+        group by product_id
+    )t2
+    on t1.id = t2.product_id
+    where 1=1 and t1.publish_status = '1'
     <if test="productName != null and productName != ''">
-      and t2.name like concat('%',#{productName},'%')
-    </if>
-    <if test="realName != null and realName != ''">
-      and t3.real_name like concat('%',#{realName},'%')
-    </if>
-    <if test="phone != null and phone != ''">
-      and t3.phone = #{phone}
-    </if>
-    <if test="doingProduct != null and doingProduct != 0">
-      and t4.doing_product = #{doingProduct}
+      and t1.name like concat('%',#{productName},'%')
     </if>
   </select>
 

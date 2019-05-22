@@ -1,10 +1,14 @@
 package com.third.enterprise.controller;
 
+import com.third.enterprise.bean.Product;
 import com.third.enterprise.bean.User;
+import com.third.enterprise.bean.request.ProductListRequest;
 import com.third.enterprise.bean.response.UnifiedResult;
 import com.third.enterprise.bean.response.UnifiedResultBuilder;
+import com.third.enterprise.service.IOrderService;
 import com.third.enterprise.service.IUserService;
 import com.third.enterprise.util.Constants;
+import com.third.enterprise.util.Page;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +27,9 @@ public class UserOrderController {
     @Resource
     private IUserService userService;
 
+    @Resource
+    private IOrderService orderService;
+
     @PostMapping("/confirm")
     public UnifiedResult waitConfirmUser(Integer orderId){
         List<User> confirmUserList = userService.findByOrderId(orderId);
@@ -32,4 +39,5 @@ public class UserOrderController {
         return UnifiedResultBuilder.errorResult(Constants.EMPTY_DATA_ERROR_CODE,
                 Constants.EMPTY_DATA_ERROR_MESSAGE);
     }
+
 }

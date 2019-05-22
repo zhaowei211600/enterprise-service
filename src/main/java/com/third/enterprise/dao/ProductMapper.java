@@ -27,4 +27,7 @@ public interface ProductMapper {
     ProductStatResponse statProduct();
 
     List<Product> listChooseProduct(ProductListRequest request);
+
+    Integer revokeProduct(@Param("productId") Integer productId,
+                          @Param("status") String status);
 }

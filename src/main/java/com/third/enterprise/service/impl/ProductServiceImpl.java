@@ -74,7 +74,7 @@ public class ProductServiceImpl implements IProductService{
     @Override
     public boolean updateProduct(Product product) {
         if(productMapper.updateByPrimaryKeySelective(product) > 0){
-            if(orderMapper.updateOrderStatus(product.getOrderId(), Constants.OrderState.ALREADLY_CHECKED) > 0){
+            if(orderMapper.updateOrderStatus(product.getOrderId(), Constants.OrderState.ON_DOING) > 0){
                  return true;
             }
         }
@@ -96,31 +96,23 @@ public class ProductServiceImpl implements IProductService{
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean chooseUser(Integer[] orderIdList) {
+    public boolean chooseUser(Integer[] orderIdList, Integer productId) {
 
-        /*Product product = productMapper.selectByProductId(productId);
-        Order order = orderMapper.selectByPrimaryKey(orderId);
-        if(product != null && order != null){
-            product.setOrderId(orderId);
-            product.setOwnerId(userId);
-            product.setExpectCost(order.getExpectCost());
+        Product product = productMapper.selectByProductId(productId);
+        if(product != null){
             product.setStatus(Constants.ProductState.ON_DOING);
             if(productMapper.updateByPrimaryKeySelective(product) > 0){
-                if(orderMapper.updateOrderStatus(orderId , Constants.OrderState.CHECKED) > 0){
-                    orderMapper.failedOtherOrder(productId, userId);
+                if(orderMapper.chooseUser(orderIdList)){
                     return true;
                 }
             }
-        }*/
-        if(orderMapper.chooseUser(orderIdList)){
-            return true;
         }
         return false;
     }
 
     @Override
     public boolean revokeProduct(Integer productId) {
-        if(productMapper.updateProductStatus(productId, Constants.PublishState.REVOKE) > 0){
+        if(productMapper.revokeProduct(productId, Constants.PublishState.REVOKE) > 0){
             return true;
         }
         return false;
@@ -140,7 +132,7 @@ public class ProductServiceImpl implements IProductService{
     @Override
     public boolean applyProduct(Product product) {
         if(productMapper.updateByPrimaryKeySelective(product) > 0){
-             if(orderMapper.updateOrderStatus(product.getOrderId(), Constants.OrderState.WAIT_CHECK) > 0){
+             if(orderMapper.updateOrderStatus(product.getOrderId(), Constants.OrderState.ON_DOING) > 0){
                   return true;
              }
         }
@@ -154,5 +146,38 @@ public class ProductServiceImpl implements IProductService{
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean disableAttachment(String filePath) {
+        ProductAttachment attachment = attachmentMapper.selectByFilePath(filePath);
+        if(attachment != null){
+            attachment.setStatus("2");
+            if(attachmentMapper.updateByPrimaryKeySelective(attachment) > 0){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public boolean closeProduct(Integer productId) {
+        Product product = productMapper.selectByProductId(productId);
+        if(product != null){
+            product.setStatus("3");
+            if(productMapper.updateByPrimaryKeySelective(product) > 0){
+                //TODO 关闭所有订单
+                if(orderMapper.closeByProductId(productId) > 0){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public List<ProductAttachment> listFile(Integer productId) {
+        return attachmentMapper.listFile(productId);
     }
 }

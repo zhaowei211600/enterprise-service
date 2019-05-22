@@ -21,7 +21,7 @@ public interface IProductService {
 
     boolean updateStatus(Integer productId, String status);
 
-    boolean chooseUser(Integer[] orderIdList);
+    boolean chooseUser(Integer[] orderIdList,Integer productId);
 
     boolean revokeProduct(Integer productId);
 
@@ -33,4 +33,9 @@ public interface IProductService {
 
     boolean saveAttachment(ProductAttachment attachment);
 
+    boolean disableAttachment(String filePath);
+
+    boolean closeProduct(Integer productId);
+
+    List<ProductAttachment> listFile(Integer productId);
 }

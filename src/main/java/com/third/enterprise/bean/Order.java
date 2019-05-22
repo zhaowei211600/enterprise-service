@@ -25,6 +25,21 @@ public class Order {
 
     private BigDecimal expectCost;
 
+    //产品信息
+    private String type;
+
+    private String attr;
+
+    private String productName;
+
+    private String budget;
+
+    private String productStatus;
+
+    private String expectDeliveryTime;
+
+    private String isCheck;
+
     public Integer getId() {
         return id;
     }
@@ -103,5 +118,61 @@ public class Order {
 
     public void setExpectCost(BigDecimal expectCost) {
         this.expectCost = expectCost;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getAttr() {
+        return attr;
+    }
+
+    public void setAttr(String attr) {
+        this.attr = attr;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getBudget() {
+        return budget;
+    }
+
+    public void setBudget(String budget) {
+        this.budget = budget;
+    }
+
+    public String getProductStatus() {
+        return productStatus;
+    }
+
+    public void setProductStatus(String productStatus) {
+        this.productStatus = productStatus;
+    }
+
+    public String getExpectDeliveryTime() {
+        return expectDeliveryTime;
+    }
+
+    public void setExpectDeliveryTime(String expectDeliveryTime) {
+        this.expectDeliveryTime = expectDeliveryTime;
+    }
+
+    public String getIsCheck() {
+        return isCheck;
+    }
+
+    public void setIsCheck(String isCheck) {
+        this.isCheck = isCheck;
     }
 }

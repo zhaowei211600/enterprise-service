@@ -35,9 +35,9 @@ public class CheckOrderServiceImpl implements ICheckOrderService{
     }
 
     @Override
-    public List<CheckOrder> checkList(CheckListRequest request) {
+    public List<CheckOrder> settleList(CheckListRequest request) {
         PageHelper.startPage(request.getPageNum(), request.getPageSize());
-        return checkOrderMapper.checkList(request);
+        return checkOrderMapper.settleList(request);
     }
 
     @Override
@@ -56,6 +56,23 @@ public class CheckOrderServiceImpl implements ICheckOrderService{
     @Override
     public boolean updateCheckOrder(CheckOrder checkOrder) {
         if(checkOrderMapper.updateByPrimaryKeySelective(checkOrder) > 0){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean saveCheckOrder(CheckOrder checkOrder) {
+
+        if(checkOrderMapper.insertSelective(checkOrder) > 0){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean hasOpenCheckOrder(Integer orderId) {
+        if(checkOrderMapper.hasOpenCheckOrder(orderId) > 0){
             return true;
         }
         return false;

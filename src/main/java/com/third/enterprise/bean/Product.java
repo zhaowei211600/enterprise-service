@@ -51,6 +51,10 @@ public class Product {
 
     private Integer doingProduct;
 
+    private Integer onWait;
+
+    private Integer onDoing;
+
     //2019-05-08新增
     private String type;
 
@@ -295,5 +299,21 @@ public class Product {
 
     public void setFileNameList(String fileNameList) {
         this.fileNameList = fileNameList;
+    }
+
+    public Integer getOnWait() {
+        return onWait;
+    }
+
+    public void setOnWait(Integer onWait) {
+        this.onWait = onWait;
+    }
+
+    public Integer getOnDoing() {
+        return onDoing;
+    }
+
+    public void setOnDoing(Integer onDoing) {
+        this.onDoing = onDoing;
     }
 }

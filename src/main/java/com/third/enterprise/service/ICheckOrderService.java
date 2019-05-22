@@ -11,7 +11,7 @@ public interface ICheckOrderService {
 
     List<CheckOrder> waitCheck(CheckListRequest request);
 
-    List<CheckOrder> checkList(CheckListRequest request);
+    List<CheckOrder> settleList(CheckListRequest request);
 
     boolean auditCheck(CheckOrder checkOrder);
 
@@ -19,4 +19,7 @@ public interface ICheckOrderService {
 
     boolean updateCheckOrder(CheckOrder checkOrder);
 
+    boolean saveCheckOrder(CheckOrder checkOrder);
+
+    boolean hasOpenCheckOrder(Integer orderId);
 }

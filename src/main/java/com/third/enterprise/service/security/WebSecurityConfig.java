@@ -75,6 +75,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/operation/user/login").permitAll()
                 .antMatchers("/operation/custom/**").permitAll()
                 .antMatchers("/operation/**").authenticated();
+
         // 添加JWT filter
         httpSecurity
                 .addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
