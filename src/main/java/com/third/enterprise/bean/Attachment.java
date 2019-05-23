@@ -5,7 +5,7 @@ import java.util.Date;
 public class Attachment {
     private Integer id;
 
-    private Integer orderId;
+    private Integer checkOrderId;
 
     private String fileName;
 
@@ -25,12 +25,12 @@ public class Attachment {
         this.id = id;
     }
 
-    public Integer getOrderId() {
-        return orderId;
+    public Integer getCheckOrderId() {
+        return checkOrderId;
     }
 
-    public void setOrderId(Integer orderId) {
-        this.orderId = orderId;
+    public void setCheckOrderId(Integer checkOrderId) {
+        this.checkOrderId = checkOrderId;
     }
 
     public String getFileName() {

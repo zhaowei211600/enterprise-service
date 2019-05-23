@@ -4,7 +4,7 @@ public class AttachmentListRequest {
 
     private Integer userId;
 
-    private Integer orderId;
+    private Integer checkOrderId;
 
     private Integer pageNum = 1;
 
@@ -18,12 +18,12 @@ public class AttachmentListRequest {
         this.userId = userId;
     }
 
-    public Integer getOrderId() {
-        return orderId;
+    public Integer getCheckOrderId() {
+        return checkOrderId;
     }
 
-    public void setOrderId(Integer orderId) {
-        this.orderId = orderId;
+    public void setCheckOrderId(Integer checkOrderId) {
+        this.checkOrderId = checkOrderId;
     }
 
     public Integer getPageNum() {
