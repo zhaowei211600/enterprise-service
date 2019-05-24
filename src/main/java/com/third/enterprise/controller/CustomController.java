@@ -114,6 +114,19 @@ public class CustomController {
                 Constants.DATA_HANDLE_ERROR_MESSAGE);
     }
 
+    @RequestMapping("/enable")
+    public UnifiedResult enableUser(Integer userId){
+
+        User customer = userService.findByUserId(userId);
+        if(customer != null && Constants.UserState.STOPED.equals(customer.getStatus())){
+            if(userService.updateStatus(userId, Constants.UserState.PASSED)){
+                return UnifiedResultBuilder.defaultSuccessResult();
+            }
+        }
+        return UnifiedResultBuilder.errorResult(Constants.DATA_HANDLE_ERROR_CODE,
+                Constants.DATA_HANDLE_ERROR_MESSAGE);
+    }
+
     @RequestMapping("/reset")
     public UnifiedResult resetUserPassword(Integer userId, String password){
 
