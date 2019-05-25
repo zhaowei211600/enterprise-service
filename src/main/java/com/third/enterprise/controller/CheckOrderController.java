@@ -73,7 +73,7 @@ public class CheckOrderController {
     }
 
     @PostMapping("/settle/list")
-    public UnifiedResult settleList(CheckListRequest request){
+    public UnifiedResult settleList(@RequestBody CheckListRequest request){
         List<CheckOrder> checkOrderList = checkOrderService.settleList(request);
         if(checkOrderList != null && checkOrderList.size() > 0){
             return UnifiedResultBuilder.successResult(Constants.SUCCESS_MESSAGE,

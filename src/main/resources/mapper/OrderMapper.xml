@@ -142,7 +142,7 @@
     FROM
       t_order t1
       LEFT JOIN t_user t2 ON t1.user_id = t2.id
-    WHERE 1=1
+    WHERE 1=1 and t1.status = '1'
     <if test="productId != ''">
        and t1.product_id = #{productId}
     </if>
