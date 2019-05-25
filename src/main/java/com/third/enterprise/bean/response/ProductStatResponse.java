@@ -8,6 +8,8 @@ public class ProductStatResponse {
 
     private Integer finishCount;
 
+    private Integer settleAmount;
+
     public Integer getTotalCount() {
         return totalCount;
     }
@@ -30,5 +32,13 @@ public class ProductStatResponse {
 
     public void setFinishCount(Integer finishCount) {
         this.finishCount = finishCount;
+    }
+
+    public Integer getSettleAmount() {
+        return settleAmount;
+    }
+
+    public void setSettleAmount(Integer settleAmount) {
+        this.settleAmount = settleAmount;
     }
 }

@@ -367,9 +367,10 @@
     SELECT
       sum(1) totalCount ,
       sum(CASE STATUS WHEN 2 THEN 1 ELSE 0 END) doingCount ,
-      sum(CASE STATUS WHEN 4 THEN 1 ELSE 0 END) finishCount
+      sum(CASE STATUS WHEN 3 THEN 1 ELSE 0 END) finishCount,
+      t2.settleAmount
     FROM
-      t_product
+      t_product,(select sum(amount) settleAmount from t_check_order where `status` = '4') t2
   </select>
 
   <!--<select id="countListChooseProduct" resultType="java.lang.Integer"
