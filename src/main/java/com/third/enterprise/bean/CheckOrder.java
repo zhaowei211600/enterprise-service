@@ -31,6 +31,18 @@ public class CheckOrder {
 
     private Date updateTime;
 
+    private String type;
+
+    private String attr;
+
+    private BigDecimal budget;
+
+    private String productStatus;
+
+    private String expectDeliveryTime;
+
+    private String productName;
+
     public Integer getId() {
         return id;
     }
@@ -133,5 +145,53 @@ public class CheckOrder {
 
     public void setAuditor(String auditor) {
         this.auditor = auditor;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getAttr() {
+        return attr;
+    }
+
+    public void setAttr(String attr) {
+        this.attr = attr;
+    }
+
+    public BigDecimal getBudget() {
+        return budget;
+    }
+
+    public void setBudget(BigDecimal budget) {
+        this.budget = budget;
+    }
+
+    public String getProductStatus() {
+        return productStatus;
+    }
+
+    public void setProductStatus(String productStatus) {
+        this.productStatus = productStatus;
+    }
+
+    public String getExpectDeliveryTime() {
+        return expectDeliveryTime;
+    }
+
+    public void setExpectDeliveryTime(String expectDeliveryTime) {
+        this.expectDeliveryTime = expectDeliveryTime;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 }

@@ -22,4 +22,6 @@ public interface ICheckOrderService {
     boolean saveCheckOrder(CheckOrder checkOrder);
 
     boolean hasOpenCheckOrder(Integer orderId);
+
+    List<CheckOrder> listAll(CheckListRequest request);
 }

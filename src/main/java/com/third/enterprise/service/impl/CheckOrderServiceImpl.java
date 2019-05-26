@@ -77,4 +77,10 @@ public class CheckOrderServiceImpl implements ICheckOrderService{
         }
         return false;
     }
+
+    @Override
+    public List<CheckOrder> listAll(CheckListRequest request) {
+        PageHelper.startPage(request.getPageNum(), request.getPageSize());
+        return checkOrderMapper.listAll(request);
+    }
 }

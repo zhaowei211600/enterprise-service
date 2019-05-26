@@ -1,5 +1,7 @@
 package com.third.enterprise.bean.response;
 
+import java.math.BigDecimal;
+
 public class ProductStatResponse {
 
     private Integer totalCount;
@@ -8,7 +10,7 @@ public class ProductStatResponse {
 
     private Integer finishCount;
 
-    private Integer settleAmount;
+    private BigDecimal settleAmount;
 
     public Integer getTotalCount() {
         return totalCount;
@@ -34,11 +36,12 @@ public class ProductStatResponse {
         this.finishCount = finishCount;
     }
 
-    public Integer getSettleAmount() {
+
+    public BigDecimal getSettleAmount() {
         return settleAmount;
     }
 
-    public void setSettleAmount(Integer settleAmount) {
+    public void setSettleAmount(BigDecimal settleAmount) {
         this.settleAmount = settleAmount;
     }
 }

@@ -4,6 +4,7 @@ import com.third.enterprise.bean.*;
 import com.third.enterprise.bean.request.ProductApplyRequest;
 import com.third.enterprise.bean.request.ProductCheckRequest;
 import com.third.enterprise.bean.request.ProductListRequest;
+import com.third.enterprise.bean.response.ProductStatResponse;
 import com.third.enterprise.bean.response.UnifiedResult;
 import com.third.enterprise.bean.response.UnifiedResultBuilder;
 import com.third.enterprise.service.ICheckOrderService;
@@ -159,7 +160,8 @@ public class ProductController {
 
     @PostMapping("/stat")
     public UnifiedResult statProduct(){
-        return UnifiedResultBuilder.successResult(Constants.SUCCESS_MESSAGE, productService.statProduct());
+        ProductStatResponse productStatResponse = productService.statProduct();
+        return UnifiedResultBuilder.successResult(Constants.SUCCESS_MESSAGE, productStatResponse);
     }
 
     @RequestMapping("/choose")

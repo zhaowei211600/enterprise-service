@@ -24,4 +24,5 @@ public interface CheckOrderMapper {
 
     int hasOpenCheckOrder(Integer orderId);
 
+    List<CheckOrder> listAll(CheckListRequest request);
 }

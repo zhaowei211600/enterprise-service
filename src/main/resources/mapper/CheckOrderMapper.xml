@@ -16,6 +16,13 @@
     <result column="phone" property="phone" jdbcType="VARCHAR" />
     <result column="auditor" property="auditor" jdbcType="VARCHAR" />
 
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="attr" property="attr" jdbcType="VARCHAR" />
+    <result column="budget" property="budget" jdbcType="VARCHAR" />
+    <result column="product_status" property="productStatus" jdbcType="VARCHAR" />
+    <result column="expect_delivery_time" property="expectDeliveryTime" jdbcType="VARCHAR" />
+    <result column="product_name" property="productName" jdbcType="VARCHAR" />
+
   </resultMap>
   <sql id="Base_Column_List" >
     id, user_id, product_id, order_id, status, finish_desc, audit_desc, create_time,
@@ -212,4 +219,56 @@
     status = '1'
   </select>
 
+  <select id="listAll" resultMap="BaseResultMap"
+          parameterType="com.third.enterprise.bean.request.CheckListRequest">
+    SELECT
+      t1.id ,
+      t1.user_id ,
+      t1.order_id,
+      t1.product_id ,
+      t1.status ,
+      t1.finish_desc,
+      t1.audit_desc,
+      t1.amount,
+      t1.auditor,
+      t1.create_time ,
+      t1.update_time ,
+      t2.name product_name,
+      t2.type ,
+      t2.attr ,
+      t2.budget ,
+      t2.status product_status,
+      t2.expect_delivery_time,
+      t2.name product_name,
+      t3.phone,
+      t3.real_name
+    FROM
+      t_check_order t1
+      LEFT JOIN t_product t2
+        ON t1.product_id = t2.id
+      left join t_user t3
+        on t1.user_id  = t3.id
+    where 1=1
+    <if test="productName != '' and productName != null">
+      and t2.name like concat('%',#{productName},'%')
+    </if>
+    <if test="productId != '' and productId != null">
+      and t1.product_id = #{productId,jdbcType=INTEGER}
+    </if>
+    <if test="type != '' and type != null">
+      and t2.type = #{type}
+    </if>
+    <if test="attr != '' and attr != null">
+      and t2.attr = #{attr}
+    </if>
+    <if test="queryType == '1'.toString() ">
+      and t1.status in ('1','2','3','4')
+    </if>
+    <if test="queryType == '2'.toString() ">
+      and t1.status in ('2','4')
+    </if>
+    <if test="status  != null and status != ''">
+      and t1.status = #{status}
+    </if>
+  </select>
 </mapper>

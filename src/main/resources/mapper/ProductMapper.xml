@@ -36,6 +36,9 @@
 
     <result column="on_wait" property="onWait" jdbcType="INTEGER"/>
     <result column="on_doing" property="onDoing" jdbcType="INTEGER"/>
+
+    <result column="settle_amount" property="settleAmount" jdbcType="DECIMAL" />
+
   </resultMap>
   <sql id="Base_Column_List" >
     id, product_id, name, budget, expect_cost,real_cost, period_start,period_end, expect_delivery_time, real_delivery_time,contract_time,
@@ -306,25 +309,31 @@
   <select id="listProduct" resultMap="BaseResultMap"
           parameterType="com.third.enterprise.bean.request.ProductListRequest" >
     select
-        <include refid="Base_Column_List" />
-    from t_product
+      t1.*,
+      ifnull(t2.settle_amount,0.00) settle_amount
+    from t_product t1
+    left join (
+    select product_id,sum(amount) settle_amount from t_check_order where `status` = '4' group by product_id
+    )t2
+    on t1.id = t2.product_id
+
     where 1=1
     <if test="productName != null and productName != ''">
-      and name like concat('%',#{productName},'%')
+      and t1.name like concat('%',#{productName},'%')
     </if>
     <if test="publishStatus != null and publishStatus != ''">
-      and publish_status = #{publishStatus}
+      and t1.publish_status = #{publishStatus}
     </if>
     <if test="status != null and status != ''">
-      and status = #{status}
+      and t1.status = #{status}
     </if>
     <if test="publishTimeStart != null and publishTimeStart!= ''">
-      and create_time >= #{publishTimeStart}
+      and t1.create_time >= #{publishTimeStart}
     </if>
     <if test="publishTimeEnd != null and publishTimeStart != ''">
-      and create_time <![CDATA[<=]]> #{publishTimeEnd}
+      and t1.create_time <![CDATA[<=]]> #{publishTimeEnd}
     </if>
-    ORDER BY id desc
+    ORDER BY t1.id desc
   </select>
 
   <select id="listCheckProduct" resultMap="BaseResultMap"
@@ -365,12 +374,23 @@
 
   <select id="statProduct" resultType="com.third.enterprise.bean.response.ProductStatResponse">
     SELECT
-      sum(1) totalCount ,
-      sum(CASE STATUS WHEN 2 THEN 1 ELSE 0 END) doingCount ,
-      sum(CASE STATUS WHEN 3 THEN 1 ELSE 0 END) finishCount,
-      t2.settleAmount
+      t1.totalCount ,
+      t1.doingCount ,
+      t1.finishCount ,
+      ifnull(t2.settleAmount,0) settleAmount
     FROM
-      t_product,(select sum(amount) settleAmount from t_check_order where `status` = '4') t2
+      (select sum(1) totalCount ,
+              sum(CASE STATUS WHEN 2 THEN 1 ELSE 0 END) doingCount ,
+              sum(CASE STATUS WHEN 3 THEN 1 ELSE 0 END) finishCount
+       from t_product) t1,
+      (
+        SELECT
+          sum(amount) settleAmount
+        FROM
+          t_check_order
+        WHERE
+        `status` = '4'
+      ) t2
   </select>
 
   <!--<select id="countListChooseProduct" resultType="java.lang.Integer"

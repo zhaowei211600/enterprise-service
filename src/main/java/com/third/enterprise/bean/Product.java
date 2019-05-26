@@ -70,6 +70,8 @@ public class Product {
 
     private String fileNameList;
 
+    private BigDecimal settleAmount;
+
     public Integer getId() {
         return id;
     }
@@ -325,5 +327,13 @@ public class Product {
 
     public void setOnDoing(Integer onDoing) {
         this.onDoing = onDoing;
+    }
+
+    public BigDecimal getSettleAmount() {
+        return settleAmount;
+    }
+
+    public void setSettleAmount(BigDecimal settleAmount) {
+        this.settleAmount = settleAmount;
     }
 }

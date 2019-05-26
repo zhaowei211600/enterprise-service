@@ -24,6 +24,18 @@ public class CheckOrderController {
     @Autowired
     private ICheckOrderService checkOrderService;
 
+    @PostMapping("/list")
+    public UnifiedResult list(@RequestBody CheckListRequest request){
+        List<CheckOrder> checkOrderList = checkOrderService.listAll(request);
+        if(checkOrderList != null && checkOrderList.size() > 0){
+            return UnifiedResultBuilder.successResult(Constants.SUCCESS_MESSAGE,
+                    checkOrderList,
+                    Page.toPage(checkOrderList).getTotal());
+        }
+        return UnifiedResultBuilder.errorResult(Constants.EMPTY_DATA_ERROR_CODE,
+                Constants.EMPTY_DATA_ERROR_MESSAGE);
+    }
+
     @PostMapping("/detail")
     public UnifiedResult checkDetail(Integer id){
 
