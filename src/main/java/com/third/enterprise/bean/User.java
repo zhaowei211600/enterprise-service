@@ -1,7 +1,5 @@
 package com.third.enterprise.bean;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -30,6 +28,10 @@ public class User {
     private Date createTime;
 
     private Date updateTime;
+
+    private String bankNo;
+
+    private String bankName;
 
     public Integer getId() {
         return id;
@@ -125,5 +127,21 @@ public class User {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getBankNo() {
+        return bankNo;
+    }
+
+    public void setBankNo(String bankNo) {
+        this.bankNo = bankNo;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
     }
 }

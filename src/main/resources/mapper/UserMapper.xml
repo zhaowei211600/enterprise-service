@@ -14,10 +14,14 @@
     <result column="pass_time" property="passTime" jdbcType="TIMESTAMP" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+
+    <result column="bank_no" property="bankNo" jdbcType="VARCHAR" />
+    <result column="bank_name" property="bankName" jdbcType="VARCHAR" />
+
   </resultMap>
   <sql id="Base_Column_List" >
     id, phone, password, real_name, card_no, card_img_front, card_img_back, status, register_time, pass_time, create_time,
-    update_time
+    update_time, bank_no, bank_name
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select
